@@ -8,6 +8,8 @@
 
 **Goal:** Runnable monorepo with Spotify login working end-to-end.
 
+Status: phase 1 is implemented in code; this section reflects the current setup.
+
 ### 1.1 Bootstrap the client
 
 ```bash
@@ -60,7 +62,7 @@ client/src/components/wmp/
 ### 1.4 Express server + Spotify OAuth
 
 ```bash
-cp .env.example server/.env   # fill in CLIENT_ID, CLIENT_SECRET, DATABASE_URL
+cp .env.example server/.env   # fill in SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, DATABASE_URL
 ```
 
 Create these files:
@@ -76,10 +78,11 @@ server/src/
 **OAuth flow (Authorization Code):**
 
 1. `GET /auth/login` — redirect to Spotify authorize URL with scopes
-2. `GET /auth/callback` — exchange code for tokens, store in DB, redirect to client
-3. `POST /auth/refresh` — use stored refresh token to get a new access token
+2. `GET /auth/callback` — exchange code for tokens, fetch Spotify profile, store token row in DB, redirect to client
+3. `POST /auth/refresh` — load the latest saved refresh token, refresh it, and update the DB row
 
 Required Spotify scopes:
+
 ```
 streaming
 user-read-email
@@ -97,24 +100,19 @@ npm run db:generate -w server
 npm run db:migrate -w server
 ```
 
-`server/src/prisma/schema.prisma`:
+`server/prisma/schema.prisma`:
 
 ```prisma
-model User {
-  id          String  @id @default(cuid())
-  spotifyId   String  @unique
-  email       String?
-  displayName String?
-  token       Token?
-}
-
 model Token {
   id           String   @id @default(cuid())
-  userId       String   @unique
+  spotifyId    String   @unique
   accessToken  String
   refreshToken String
   expiresAt    DateTime
-  user         User     @relation(fields: [userId], references: [id])
+  scope        String?
+  tokenType    String   @default("Bearer")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 ```
 
@@ -125,13 +123,14 @@ client/src/stores/useAuthStore.ts   — { user, accessToken, setAuth, clearAuth 
 client/src/pages/Login.tsx          — WMP splash screen + "Log in with Spotify" button
 ```
 
-The login button redirects to `http://localhost:3001/auth/login`. After the OAuth callback the server redirects back to the client with the token.
+The login button redirects to `http://127.0.0.1:3001/auth/login`. After the OAuth callback the server redirects back to the client with the token.
 
 ### Phase 1 checklist
-- [ ] `npm run dev` starts both client (:5173) and server (:3001)
-- [ ] Clicking "Log in with Spotify" redirects to Spotify and back
-- [ ] Access token is stored and readable from `useAuthStore`
-- [ ] WMP window chrome renders on the login screen
+
+- [x] `npm run dev` starts both client (:5173) and server (:3001)
+- [x] Clicking "Log in with Spotify" redirects to Spotify and back
+- [x] Access token is stored and readable from `useAuthStore`
+- [x] WMP window chrome renders on the login screen
 
 ---
 
@@ -148,8 +147,8 @@ The login button redirects to `http://localhost:3001/auth/login`. After the OAut
 // Request interceptor → attaches Authorization: Bearer <token>
 // Response interceptor → on 401, calls /auth/refresh then retries
 const spotifyClient = axios.create({
-  baseURL: 'https://api.spotify.com/v1',
-})
+  baseURL: "https://api.spotify.com/v1",
+});
 ```
 
 ### 2.2 React Query hooks
@@ -170,18 +169,35 @@ Set `staleTime: 1000 * 60` (1 min) on each query to avoid hammering the API.
 
 ```ts
 interface Track {
-  id:          string
-  name:        string
-  duration_ms: number
-  artists:     Artist[]
-  album:       Album
-  uri:         string
+  id: string;
+  name: string;
+  duration_ms: number;
+  artists: Artist[];
+  album: Album;
+  uri: string;
 }
 
-interface Artist   { id: string; name: string; images: Image[] }
-interface Album    { id: string; name: string; images: Image[]; release_date: string }
-interface Image    { url: string; width: number; height: number }
-interface Playlist { id: string; name: string; tracks: { total: number } }
+interface Artist {
+  id: string;
+  name: string;
+  images: Image[];
+}
+interface Album {
+  id: string;
+  name: string;
+  images: Image[];
+  release_date: string;
+}
+interface Image {
+  url: string;
+  width: number;
+  height: number;
+}
+interface Playlist {
+  id: string;
+  name: string;
+  tracks: { total: number };
+}
 ```
 
 ### 2.4 Zustand player store
@@ -190,19 +206,19 @@ interface Playlist { id: string; name: string; tracks: { total: number } }
 
 ```ts
 interface PlayerState {
-  isPlaying:    boolean
-  currentTrack: Track | null
-  queue:        Track[]
-  deviceId:     string | null
-  volume:       number
-  position:     number  // ms
-  duration:     number  // ms
-  setPlay:      (track: Track) => void
-  setPause:     () => void
-  nextTrack:    () => void
-  prevTrack:    () => void
-  setDeviceId:  (id: string) => void
-  setPosition:  (ms: number) => void
+  isPlaying: boolean;
+  currentTrack: Track | null;
+  queue: Track[];
+  deviceId: string | null;
+  volume: number;
+  position: number; // ms
+  duration: number; // ms
+  setPlay: (track: Track) => void;
+  setPause: () => void;
+  nextTrack: () => void;
+  prevTrack: () => void;
+  setDeviceId: (id: string) => void;
+  setPosition: (ms: number) => void;
 }
 ```
 
@@ -220,6 +236,7 @@ interface PlayerState {
 Call `initSDK()` once inside `App.tsx` after the user is authenticated.
 
 ### Phase 2 checklist
+
 - [ ] `useSearch('blinding lights')` returns typed results
 - [ ] `useLibrary()` returns the user's playlists and liked songs
 - [ ] Web Playback SDK device is registered and `deviceId` is in the store
@@ -259,14 +276,14 @@ client/src/components/player/
 
 ### 3.3 Pages
 
-| Page | Key components | Data source |
-|---|---|---|
-| `Login.tsx` | WMP logo, tagline, OAuth button | — |
-| `Library.tsx` | Recently added grid, playlist sidebar | `useLibrary()` |
-| `Search.tsx` | Search input, tabs (Tracks / Artists / Albums) | `useSearch()` |
-| `NowPlaying.tsx` | Album art, track info, controls, bitrate display | `usePlayerStore` |
-| `Playlist.tsx` | Track list with #, title, artist, duration | `usePlaylist(id)` |
-| `Equalizer.tsx` | 10-band EQ sliders, balance, presets dropdown | local state |
+| Page             | Key components                                   | Data source       |
+| ---------------- | ------------------------------------------------ | ----------------- |
+| `Login.tsx`      | WMP logo, tagline, OAuth button                  | —                 |
+| `Library.tsx`    | Recently added grid, playlist sidebar            | `useLibrary()`    |
+| `Search.tsx`     | Search input, tabs (Tracks / Artists / Albums)   | `useSearch()`     |
+| `NowPlaying.tsx` | Album art, track info, controls, bitrate display | `usePlayerStore`  |
+| `Playlist.tsx`   | Track list with #, title, artist, duration       | `usePlaylist(id)` |
+| `Equalizer.tsx`  | 10-band EQ sliders, balance, presets dropdown    | local state       |
 
 ### 3.4 WMP styling notes
 
@@ -277,6 +294,7 @@ client/src/components/player/
 - Font: `Tahoma, sans-serif` — the authentic WMP/XP typeface
 
 ### Phase 3 checklist
+
 - [ ] All 6 routes render without errors
 - [ ] Library shows real playlists from Spotify
 - [ ] Search returns and displays results
@@ -302,6 +320,7 @@ npm run db:migrate
 ```
 
 **Ports:**
+
 - Client → `http://localhost:5173`
 - Server → `http://localhost:3001`
 - Prisma Studio → `http://localhost:5555` (`npm run db:studio`)
