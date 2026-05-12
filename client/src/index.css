@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wmp-blue: #0a246a;
+  --color-wmp-blue-light: #3a6ea5;
+  --color-wmp-gray: #ece9d8;
+  --color-wmp-gray-dark: #d4d0c8;
+  --color-wmp-silver: #f0eeea;
+  --color-wmp-text: #000000;
+  --color-wmp-text-muted: #6e6e6e;
+  --color-wmp-green: #1db954;
+
+  --font-sans: Tahoma, sans-serif;
+}
