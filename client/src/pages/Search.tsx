@@ -35,7 +35,7 @@ export const Search = () => {
                     {data.tracks.items.map((track) => (
                         <div key={track.id} className="mb-2 p-2 bg-wmp-gray border border-wmp-blue rounded">
                             <p className="font-semibold">{track.name}</p>
-                            <p className="text-sm">{track.artists.mapl((a) => a.name).join(", ")}</p>
+                            <p className="text-sm">{track.artists.map((a) => a.name).join(", ")}</p>
                         </div>
                     ))}
                 </div>
