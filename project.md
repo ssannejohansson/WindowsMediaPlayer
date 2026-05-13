@@ -329,6 +329,169 @@ npm run db:migrate
 
 ---
 
-## Phase 4 preview
-
-Phase 4 covers the social layer: playlist CRUD, liked songs toggle, recently played history, and the responsive compact WMP skin for mobile. Once phases 1–3 are solid, phase 4 is mostly additive.
+## Phase 4 — Social layer
+ 
+**Goal:** Users can manage their own library — playlists, liked songs, and listening history.
+ 
+### 4.1 Playlist CRUD
+ 
+Add create, rename, and delete playlist support via the Spotify API. The Library sidebar should reflect changes immediately using React Query's `invalidateQueries`.
+ 
+```
+client/src/components/library/
+  CreatePlaylistModal.tsx   — name input + create button
+  PlaylistContextMenu.tsx   — right-click rename / delete
+```
+ 
+API calls to add:
+- `POST /playlists` — create playlist
+- `PUT /playlists/:id` — rename
+- `DELETE /playlists/:id/followers` — unfollow / delete
+- `POST /playlists/:id/tracks` — add track
+- `DELETE /playlists/:id/tracks` — remove track
+### 4.2 Liked songs toggle
+ 
+Add a heart icon to every `TrackRow` component. Clicking it calls `PUT /me/tracks` or `DELETE /me/tracks` and optimistically updates the UI.
+ 
+```
+client/src/hooks/useLikedSongs.ts   — isLiked(id), like(id), unlike(id)
+```
+ 
+### 4.3 Recently played
+ 
+```
+client/src/hooks/useRecentlyPlayed.ts   — GET /me/player/recently-played
+```
+ 
+Show the last 10 tracks at the top of the Library page in a horizontally scrolling strip — just like WMP's "Recently Added" section from the wireframe.
+ 
+### 4.4 Responsive compact WMP skin
+ 
+When the viewport is narrower than `768px`, collapse the full window chrome into a compact mobile skin:
+- Hide the sidebar
+- Show a slim PlayerBar with just album art, track name, and play/pause
+- Tap album art to expand to NowPlaying full screen
+### Phase 4 checklist
+- [ ] User can create, rename, and delete playlists
+- [ ] Heart icon toggles correctly on all track rows
+- [ ] Recently played strip shows on Library page
+- [ ] Compact mobile skin renders on narrow viewports
+---
+ 
+## Phase 5 — Polish + UX
+ 
+**Goal:** The app feels complete and portfolio-ready. Animations, error states, and loading skeletons throughout.
+ 
+### 5.1 Loading skeletons
+ 
+Replace every spinner with a proper skeleton that mirrors the shape of the content it's loading. WMP style — gray shimmer boxes where album art and track rows will appear.
+ 
+```
+client/src/components/ui/
+  SkeletonTrackRow.tsx   — mimics TrackRow dimensions
+  SkeletonAlbumCard.tsx  — mimics AlbumCard dimensions
+  SkeletonText.tsx       — generic line placeholder
+```
+ 
+### 5.2 Error states
+ 
+Every React Query hook should have an `onError` fallback that renders a WMP-style error dialog:
+ 
+```
+client/src/components/ui/
+  ErrorDialog.tsx   — WMP error popup with icon + retry button
+```
+ 
+### 5.3 Animations
+ 
+Add subtle transitions to make the UI feel alive without breaking the retro aesthetic:
+- Page transitions — fade in on route change (100ms)
+- Track row hover — background slides in
+- PlayerBar track change — album art cross-fades
+- Playlist modal — slides up from bottom
+Use CSS transitions rather than a library to keep the bundle lean.
+ 
+### 5.4 Keyboard shortcuts
+ 
+Replicate classic WMP keyboard shortcuts:
+ 
+| Key | Action |
+|---|---|
+| `Space` | Play / pause |
+| `Ctrl + Right` | Next track |
+| `Ctrl + Left` | Previous track |
+| `Ctrl + Up/Down` | Volume up / down |
+| `Ctrl + F` | Focus search |
+ 
+Add a `useKeyboardShortcuts` hook in `client/src/hooks/` that registers these on `window`.
+ 
+### 5.5 Winston logging review
+ 
+Review the server logs — make sure every Express route logs request method, path, status code, and duration. Add a `morgan`-style middleware or wire it directly into Winston.
+ 
+### Phase 5 checklist
+- [ ] No bare spinners remain — all replaced with skeletons
+- [ ] Every error state shows a WMP-style error dialog with retry
+- [ ] Page transitions and hover states feel smooth
+- [ ] Keyboard shortcuts work for core playback actions
+- [ ] Server logs are clean and structured
+---
+ 
+## Phase 6 — Deployment
+ 
+**Goal:** The app is live, shareable, and stable enough to put on your portfolio.
+ 
+### 6.1 Environment setup
+ 
+Create production `.env` files for both client and server. The client only needs `VITE_API_BASE_URL` pointing to the deployed server URL.
+ 
+```bash
+# client/.env.production
+VITE_API_BASE_URL=https://your-server-url.com
+```
+ 
+### 6.2 Deploy the server
+ 
+Deploy the Express server to **Railway** or **Render** (both have free tiers and support Node + PostgreSQL):
+ 
+1. Push the repo to GitHub
+2. Connect the `main` branch to Railway/Render
+3. Add environment variables in the dashboard
+4. Run `npm run db:migrate` via the platform's shell
+### 6.3 Deploy the client
+ 
+Deploy the React + Vite client to **Vercel** or **Netlify**:
+ 
+1. Connect the GitHub repo
+2. Set build command: `npm run build -w client`
+3. Set output directory: `client/dist`
+4. Add `VITE_API_BASE_URL` as an environment variable
+### 6.4 Update Spotify app settings
+ 
+In your Spotify Developer Dashboard, add the production callback URL:
+ 
+```
+https://your-server-url.com/auth/callback
+```
+ 
+Without this, OAuth will fail in production.
+ 
+### 6.5 Spotify Development Mode limit
+ 
+Remember — your app is limited to 5 users in Development Mode. For a portfolio project that's fine. If you want more users you'll need to apply for Spotify's Extended Quota Mode, which requires a description of your use case.
+ 
+### 6.6 README
+ 
+Write a `README.md` in the repo root covering:
+- What the project is and a screenshot
+- Tech stack
+- Local setup instructions
+- Link to the live demo
+A good README is as important as the code for a portfolio piece.
+ 
+### Phase 6 checklist
+- [ ] Server deployed and `/auth/login` works in production
+- [ ] Client deployed and loads without errors
+- [ ] Spotify OAuth callback URL updated in Developer Dashboard
+- [ ] `README.md` written with screenshot and live demo link
+- [ ] Live URL added to your GitHub repo and CV
