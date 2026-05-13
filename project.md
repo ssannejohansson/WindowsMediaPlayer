@@ -123,11 +123,11 @@ client/src/stores/useAuthStore.ts   — { user, accessToken, setAuth, clearAuth 
 client/src/pages/Login.tsx          — WMP splash screen + "Log in with Spotify" button
 ```
 
-The login button redirects to `http://127.0.0.1:3001/auth/login`. After the OAuth callback the server redirects back to the client with the token.
+The login button redirects to `http://127.0.0.1:3001/auth/login`. After the OAuth callback the server redirects back to the client with the token and Spotify profile details.
 
 ### Phase 1 checklist
 
-- [x] `npm run dev` starts both client (:5173) and server (:3001)
+- [x] `npm run dev` starts the backend (:3001) and the client on `127.0.0.1` in the current dev setup
 - [x] Clicking "Log in with Spotify" redirects to Spotify and back
 - [x] Access token is stored and readable from `useAuthStore`
 - [x] WMP window chrome renders on the login screen
@@ -153,14 +153,16 @@ const spotifyClient = axios.create({
 });
 ```
 
+The current client implementation also exposes the playback helper API in `client/src/lib/playerApi.ts`, which wraps `/me/player` actions like play, pause, skip, and device transfer.
+
 ### 2.2 React Query hooks
 
 ```
 client/src/hooks/
   useSearch.ts    — GET /search?q=&type=track,artist,album
-  useLibrary.ts   — GET /me/tracks + GET /me/playlists
-  usePlaylist.ts  — GET /playlists/:id/tracks
-  usePlayer.ts    — playback controls via SDK
+  useLibrary.ts   — GET /me/tracks for liked songs
+  usePlaylist.ts  — GET /playlists/:id plus user playlists via useUserPlaylists()
+  useSpotifyPlayer.ts — Web Playback SDK setup + device registration
 ```
 
 Set `staleTime: 1000 * 60` (1 min) on each query to avoid hammering the API.
@@ -202,6 +204,8 @@ interface Playlist {
 }
 ```
 
+The concrete type file currently includes `Track`, `Artist`, `Album`, `Image`, `Playlist`, and `SearchResponse` to support the implemented hooks and UI.
+
 ### 2.4 Zustand player store
 
 `client/src/stores/usePlayerStore.ts`:
@@ -209,18 +213,17 @@ interface Playlist {
 ```ts
 interface PlayerState {
   isPlaying: boolean;
-  currentTrack: Track | null;
-  queue: Track[];
   deviceId: string | null;
-  volume: number;
-  position: number; // ms
-  duration: number; // ms
-  setPlay: (track: Track) => void;
-  setPause: () => void;
-  nextTrack: () => void;
-  prevTrack: () => void;
-  setDeviceId: (id: string) => void;
-  setPosition: (ms: number) => void;
+  currentTrack: {
+    id: string;
+    name: string;
+    duration_ms: number;
+    artists: { id: string; name: string }[];
+    album: { id: string; name: string };
+  } | null;
+  progressMs: number | null;
+  setPlaybackState: (payload: Partial<PlayerState>) => void;
+  clearPlayback: () => void;
 }
 ```
 
@@ -235,12 +238,13 @@ interface PlayerState {
 // player.on('player_state_changed') → syncs isPlaying, currentTrack, position
 ```
 
-Call `initSDK()` once inside `App.tsx` after the user is authenticated.
+The SDK is currently initialised from `useSpotifyPlayer()` in `client/src/hooks/useSpotifyPlayer.ts` and used by `client/src/pages/NowPlaying.tsx`.
 
 ### Phase 2 checklist
 
 - [x] `useSearch('blinding lights')` returns typed results
-- [x] `useLibrary()` returns the user's playlists and liked songs
+- [x] `useLibrary()` returns the user's liked songs
+- [x] `useUserPlaylists()` returns the user's playlists
 - [x] Web Playback SDK device is registered and `deviceId` is in the store
 - [x] Calling `play(track)` starts audio in the browser
 
@@ -248,7 +252,9 @@ Call `initSDK()` once inside `App.tsx` after the user is authenticated.
 
 ## Phase 3 — Core UI
 
-**Goal:** All screens built and navigable. Looks and feels like Windows Media Player.
+**Goal:** Core Windows Media Player screens wired up with shared routing and player UI.
+
+Status: phase 3 is the next UI layer to build; the current app already has the login, callback, search, library placeholder, and now playing routes in place.
 
 ### 3.1 App layout + routing
 
@@ -259,11 +265,17 @@ Call `initSDK()` once inside `App.tsx` after the user is authenticated.
 /library        → Library
 /search         → Search
 /now-playing    → NowPlaying
-/playlist/:id   → Playlist
-/equalizer      → Equalizer
+/auth/callback  → OAuth token handoff
 ```
 
 Wrap authenticated routes in a guard that checks `useAuthStore`.
+
+Planned next routes once phase 3 starts:
+
+```
+/playlist/:id   → Playlist
+/equalizer      → Equalizer
+```
 
 ### 3.2 Persistent PlayerBar
 
@@ -276,16 +288,19 @@ client/src/components/player/
   VolumeControl.tsx  — volume slider
 ```
 
+These player components are not implemented yet; they are the next files to add in phase 3.
+
 ### 3.3 Pages
 
-| Page             | Key components                                   | Data source       |
-| ---------------- | ------------------------------------------------ | ----------------- |
-| `Login.tsx`      | WMP logo, tagline, OAuth button                  | —                 |
-| `Library.tsx`    | Recently added grid, playlist sidebar            | `useLibrary()`    |
-| `Search.tsx`     | Search input, tabs (Tracks / Artists / Albums)   | `useSearch()`     |
-| `NowPlaying.tsx` | Album art, track info, controls, bitrate display | `usePlayerStore`  |
-| `Playlist.tsx`   | Track list with #, title, artist, duration       | `usePlaylist(id)` |
-| `Equalizer.tsx`  | 10-band EQ sliders, balance, presets dropdown    | local state       |
+| Page               | Key components                                 | Data source |
+| ------------------ | ---------------------------------------------- | ----------- |
+| `Login.tsx`        | WMP logo, tagline, OAuth button                | done        |
+| `AuthCallback.tsx` | OAuth token handoff and redirect to library    | done        |
+| `Search.tsx`       | Search input, tabs (Tracks / Artists / Albums) | done        |
+| `NowPlaying.tsx`   | Track info, controls, device status            | done        |
+| `Library.tsx`      | Recently added grid, playlist sidebar          | planned     |
+| `Playlist.tsx`     | Track list with #, title, artist, duration     | planned     |
+| `Equalizer.tsx`    | 10-band EQ sliders, balance, presets dropdown  | planned     |
 
 ### 3.4 WMP styling notes
 
@@ -297,9 +312,9 @@ client/src/components/player/
 
 ### Phase 3 checklist
 
-- [ ] All 6 routes render without errors
+- [x] Current implemented routes render without errors
+- [x] Login, callback, search, now-playing, and library placeholder routes exist
 - [ ] Library shows real playlists from Spotify
-- [ ] Search returns and displays results
 - [ ] PlayerBar plays, pauses, and skips tracks
 - [ ] UI looks recognisably like Windows Media Player
 
@@ -323,173 +338,193 @@ npm run db:migrate
 
 **Ports:**
 
-- Client → `http://localhost:5173`
-- Server → `http://localhost:3001`
+- Client → `http://127.0.0.1:5175` in the current dev setup
+- Server → `http://127.0.0.1:3001`
 - Prisma Studio → `http://localhost:5555` (`npm run db:studio`)
+
+If you want the current working setup exactly as used during development, run the frontend with:
+
+```bash
+cd client
+npm run dev -- --host 127.0.0.1 --port 5175
+```
 
 ---
 
 ## Phase 4 — Social layer
- 
+
 **Goal:** Users can manage their own library — playlists, liked songs, and listening history.
- 
+
 ### 4.1 Playlist CRUD
- 
+
 Add create, rename, and delete playlist support via the Spotify API. The Library sidebar should reflect changes immediately using React Query's `invalidateQueries`.
- 
+
 ```
 client/src/components/library/
   CreatePlaylistModal.tsx   — name input + create button
   PlaylistContextMenu.tsx   — right-click rename / delete
 ```
- 
+
 API calls to add:
+
 - `POST /playlists` — create playlist
 - `PUT /playlists/:id` — rename
 - `DELETE /playlists/:id/followers` — unfollow / delete
 - `POST /playlists/:id/tracks` — add track
 - `DELETE /playlists/:id/tracks` — remove track
+
 ### 4.2 Liked songs toggle
- 
+
 Add a heart icon to every `TrackRow` component. Clicking it calls `PUT /me/tracks` or `DELETE /me/tracks` and optimistically updates the UI.
- 
+
 ```
 client/src/hooks/useLikedSongs.ts   — isLiked(id), like(id), unlike(id)
 ```
- 
+
 ### 4.3 Recently played
- 
+
 ```
 client/src/hooks/useRecentlyPlayed.ts   — GET /me/player/recently-played
 ```
- 
+
 Show the last 10 tracks at the top of the Library page in a horizontally scrolling strip — just like WMP's "Recently Added" section from the wireframe.
- 
+
 ### 4.4 Responsive compact WMP skin
- 
+
 When the viewport is narrower than `768px`, collapse the full window chrome into a compact mobile skin:
+
 - Hide the sidebar
 - Show a slim PlayerBar with just album art, track name, and play/pause
 - Tap album art to expand to NowPlaying full screen
+
 ### Phase 4 checklist
+
 - [ ] User can create, rename, and delete playlists
 - [ ] Heart icon toggles correctly on all track rows
 - [ ] Recently played strip shows on Library page
 - [ ] Compact mobile skin renders on narrow viewports
+
 ---
- 
+
 ## Phase 5 — Polish + UX
- 
+
 **Goal:** The app feels complete and portfolio-ready. Animations, error states, and loading skeletons throughout.
- 
+
 ### 5.1 Loading skeletons
- 
+
 Replace every spinner with a proper skeleton that mirrors the shape of the content it's loading. WMP style — gray shimmer boxes where album art and track rows will appear.
- 
+
 ```
 client/src/components/ui/
   SkeletonTrackRow.tsx   — mimics TrackRow dimensions
   SkeletonAlbumCard.tsx  — mimics AlbumCard dimensions
   SkeletonText.tsx       — generic line placeholder
 ```
- 
+
 ### 5.2 Error states
- 
+
 Every React Query hook should have an `onError` fallback that renders a WMP-style error dialog:
- 
+
 ```
 client/src/components/ui/
   ErrorDialog.tsx   — WMP error popup with icon + retry button
 ```
- 
+
 ### 5.3 Animations
- 
+
 Add subtle transitions to make the UI feel alive without breaking the retro aesthetic:
+
 - Page transitions — fade in on route change (100ms)
 - Track row hover — background slides in
 - PlayerBar track change — album art cross-fades
 - Playlist modal — slides up from bottom
-Use CSS transitions rather than a library to keep the bundle lean.
- 
+  Use CSS transitions rather than a library to keep the bundle lean.
+
 ### 5.4 Keyboard shortcuts
- 
+
 Replicate classic WMP keyboard shortcuts:
- 
-| Key | Action |
-|---|---|
-| `Space` | Play / pause |
-| `Ctrl + Right` | Next track |
-| `Ctrl + Left` | Previous track |
+
+| Key              | Action           |
+| ---------------- | ---------------- |
+| `Space`          | Play / pause     |
+| `Ctrl + Right`   | Next track       |
+| `Ctrl + Left`    | Previous track   |
 | `Ctrl + Up/Down` | Volume up / down |
-| `Ctrl + F` | Focus search |
- 
+| `Ctrl + F`       | Focus search     |
+
 Add a `useKeyboardShortcuts` hook in `client/src/hooks/` that registers these on `window`.
- 
+
 ### 5.5 Winston logging review
- 
+
 Review the server logs — make sure every Express route logs request method, path, status code, and duration. Add a `morgan`-style middleware or wire it directly into Winston.
- 
+
 ### Phase 5 checklist
+
 - [ ] No bare spinners remain — all replaced with skeletons
 - [ ] Every error state shows a WMP-style error dialog with retry
 - [ ] Page transitions and hover states feel smooth
 - [ ] Keyboard shortcuts work for core playback actions
 - [ ] Server logs are clean and structured
+
 ---
- 
+
 ## Phase 6 — Deployment
- 
+
 **Goal:** The app is live, shareable, and stable enough to put on your portfolio.
- 
+
 ### 6.1 Environment setup
- 
+
 Create production `.env` files for both client and server. The client only needs `VITE_API_BASE_URL` pointing to the deployed server URL.
- 
+
 ```bash
 # client/.env.production
 VITE_API_BASE_URL=https://your-server-url.com
 ```
- 
+
 ### 6.2 Deploy the server
- 
+
 Deploy the Express server to **Railway** or **Render** (both have free tiers and support Node + PostgreSQL):
- 
+
 1. Push the repo to GitHub
 2. Connect the `main` branch to Railway/Render
 3. Add environment variables in the dashboard
 4. Run `npm run db:migrate` via the platform's shell
+
 ### 6.3 Deploy the client
- 
+
 Deploy the React + Vite client to **Vercel** or **Netlify**:
- 
+
 1. Connect the GitHub repo
 2. Set build command: `npm run build -w client`
 3. Set output directory: `client/dist`
 4. Add `VITE_API_BASE_URL` as an environment variable
+
 ### 6.4 Update Spotify app settings
- 
+
 In your Spotify Developer Dashboard, add the production callback URL:
- 
+
 ```
 https://your-server-url.com/auth/callback
 ```
- 
+
 Without this, OAuth will fail in production.
- 
+
 ### 6.5 Spotify Development Mode limit
- 
+
 Remember — your app is limited to 5 users in Development Mode. For a portfolio project that's fine. If you want more users you'll need to apply for Spotify's Extended Quota Mode, which requires a description of your use case.
- 
+
 ### 6.6 README
- 
+
 Write a `README.md` in the repo root covering:
+
 - What the project is and a screenshot
 - Tech stack
 - Local setup instructions
 - Link to the live demo
-A good README is as important as the code for a portfolio piece.
- 
+  A good README is as important as the code for a portfolio piece.
+
 ### Phase 6 checklist
+
 - [ ] Server deployed and `/auth/login` works in production
 - [ ] Client deployed and loads without errors
 - [ ] Spotify OAuth callback URL updated in Developer Dashboard
