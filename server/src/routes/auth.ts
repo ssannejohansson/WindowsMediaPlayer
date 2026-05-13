@@ -46,6 +46,8 @@ router.get("/callback", async (req, res) => {
       access_token: tokens.access_token,
       refresh_token: tokens.refresh_token || "",
       expires_in: String(tokens.expires_in),
+      spotify_id: profileResponse.data.id,
+      display_name: profileResponse.data.display_name || "",
     });
     const clientUrl = process.env.CLIENT_URL || "http://127.0.0.1:5173";
     res.redirect(`${clientUrl}/auth/callback?${params.toString()}`);
