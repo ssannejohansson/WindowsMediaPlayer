@@ -138,6 +138,8 @@ The login button redirects to `http://127.0.0.1:3001/auth/login`. After the OAut
 
 **Goal:** All Spotify data accessible through typed hooks. Web Playback SDK initialised.
 
+Status: phase 2 is implemented in code; this section reflects the current setup.
+
 ### 2.1 Axios client with token refresh
 
 `client/src/lib/spotify.ts`:
@@ -237,10 +239,10 @@ Call `initSDK()` once inside `App.tsx` after the user is authenticated.
 
 ### Phase 2 checklist
 
-- [ ] `useSearch('blinding lights')` returns typed results
-- [ ] `useLibrary()` returns the user's playlists and liked songs
-- [ ] Web Playback SDK device is registered and `deviceId` is in the store
-- [ ] Calling `play(track)` starts audio in the browser
+- [x] `useSearch('blinding lights')` returns typed results
+- [x] `useLibrary()` returns the user's playlists and liked songs
+- [x] Web Playback SDK device is registered and `deviceId` is in the store
+- [x] Calling `play(track)` starts audio in the browser
 
 ---
 
