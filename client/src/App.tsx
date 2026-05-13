@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { WindowFrame } from "./components/wmp/WindowFrame";
 import { Login } from "./pages/Login";
 import { AuthCallback } from "./pages/AuthCallback.js";
+import { Search } from "./pages/Search.js";
 import "./App.css"
 
 export default function App() {
@@ -14,10 +15,7 @@ export default function App() {
             path="/library"
             element={<div className="text-wmp-blue">Library (coming soon)</div>}
           />
-          <Route
-            path="/search"
-            element={<div className="text-wmp-blue">Search (coming soon)</div>}
-          />
+          <Route path="/search" element={<Search />} />
           <Route
             path="/now-playing"
             element={
