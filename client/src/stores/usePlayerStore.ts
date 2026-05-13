@@ -1,10 +1,16 @@
 import { create } from "zustand";
-import type { Track } from "../types/spotify.js";
+type CurrentTrack = {
+  id: string;
+  name: string;
+  duration_ms: number;
+  artists: Array<{ id: string; name: string }>;
+  album: { id: string; name: string };
+};
 
 type PlayerState = {
   deviceId: string | null;
   isPlaying: boolean;
-  currentTrack: Track | null;
+  currentTrack: CurrentTrack | null;
   progressMs: number | null;
   setPlaybackState: (
     payload: Partial<Omit<PlayerState, "setPlaybackState">>,
