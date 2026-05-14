@@ -6,11 +6,8 @@ import { Login } from "./pages/Login";
 import { AuthCallback } from "./pages/AuthCallback.js";
 import { Search } from "./pages/Search.js";
 import { Library } from "./pages/Library.js";
+import { NowPlaying } from "./pages/NowPlaying.js";
 import "./components/player/player.css";
-
-const NowPlaying = () => (
-  <div className="p-4 text-wmp-blue">Now Playing (coming soon)</div>
-);
 
 export default function App() {
   return (
