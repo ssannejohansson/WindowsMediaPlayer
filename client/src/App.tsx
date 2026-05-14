@@ -8,6 +8,7 @@ import { Search } from "./pages/Search.js";
 import { Library } from "./pages/Library.js";
 import { NowPlaying } from "./pages/NowPlaying.js";
 import { Playlist } from "./pages/Playlist.js";
+import { Equalizer } from "./pages/Equalizer.js";
 import "./components/player/player.css";
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
             <Route path="/search" element={<Search />} />
             <Route path="/now-playing" element={<NowPlaying />} />
             <Route path="/playlist/:id" element={<Playlist />} />
+            <Route path="/equalizer" element={<Equalizer />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />
