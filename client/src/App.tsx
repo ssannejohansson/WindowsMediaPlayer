@@ -4,7 +4,7 @@ import { RequireAuth } from "./components/routing/RequireAuth.js";
 import { Login } from "./pages/Login";
 import { AuthCallback } from "./pages/AuthCallback.js";
 import { Search } from "./pages/Search.js";
-import "./App.css"
+import "./components/player/player.css"
 
 const Library = () => (
   <div className="p-4 text-wmp-blue"> Library (coming soon)</div>
@@ -18,18 +18,22 @@ const NowPlaying = () => (
 export default function App() {
     return (
       <WindowFrame title="Windows Media Player">
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
+        <div className="app-layout">
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
 
-          <Route element={<RequireAuth />}>
-            <Route path="/library" element={<Library />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/now-playing" element={<NowPlaying />} />
-          </Route>
+            <Route element={<RequireAuth />}>
+              <Route path="/library" element={<Library />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/now-playing" element={<NowPlaying />} />
+            </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+
+          <PlayerBar />
+        </div>
       </WindowFrame>
     );
 }
