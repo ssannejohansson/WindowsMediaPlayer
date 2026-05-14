@@ -1,0 +1,96 @@
+import type { ReactElement } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { usePlaylist } from "../hooks/usePlaylist.js";
+import { Spinner } from "../components/ui/Spinner.js";
+import "./playlist.css";
+
+export const Playlist = (): ReactElement => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+
+  // Fetch the specific playlist by ID.
+  const { data: playlist, isLoading } = usePlaylist(id);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (!playlist) {
+    return (
+      <div className="playlist-container">
+        <div className="playlist-error">
+          <div className="playlist-error-message">Playlist not found</div>
+          <button
+            onClick={() => navigate("/library")}
+            className="playlist-error-btn"
+          >
+            ← Back to Library
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="playlist-container">
+      <div className="playlist-header">
+        {playlist.images?.[0]?.url && (
+          <img
+            src={playlist.images[0].url}
+            alt={playlist.name}
+            className="playlist-header-image"
+          />
+        )}
+
+        <div className="playlist-header-info">
+          <div className="playlist-type">PLAYLIST</div>
+          <div className="playlist-title">{playlist.name}</div>
+          <div className="playlist-meta">
+            {playlist.tracks.total} tracks
+            {playlist.owner && ` • By ${playlist.owner.display_name}`}
+          </div>
+        </div>
+      </div>
+
+      <div className="playlist-content">
+        {playlist.tracks.total > 0 ? (
+          <div className="playlist-tracks">
+            {/* Display placeholder message since we don't have track details fetched yet. */}
+            <div className="playlist-tracks-header">
+              <div className="playlist-tracks-number">#</div>
+              <div className="playlist-tracks-name">Title</div>
+              <div className="playlist-tracks-artist">Artist</div>
+            </div>
+
+            {Array.from({ length: Math.min(10, playlist.tracks.total) }).map(
+              (_, idx) => (
+                <div key={idx} className="playlist-track-row">
+                  <div className="playlist-tracks-number">{idx + 1}</div>
+                  <div className="playlist-tracks-name">
+                    (Track details loading)
+                  </div>
+                  <div className="playlist-tracks-artist">-</div>
+                </div>
+              ),
+            )}
+
+            {playlist.tracks.total > 10 && (
+              <div className="playlist-tracks-more">
+                +{playlist.tracks.total - 10} more tracks
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="playlist-empty">This playlist is empty</div>
+        )}
+      </div>
+
+      <button
+        onClick={() => navigate("/library")}
+        className="playlist-back-btn"
+      >
+        ← Back to Library
+      </button>
+    </div>
+  );
+};
