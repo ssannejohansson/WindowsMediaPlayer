@@ -1,9 +1,19 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { WindowFrame } from "./components/wmp/WindowFrame";
+import { RequireAuth } from "./components/routing/RequireAuth.js";
 import { Login } from "./pages/Login";
 import { AuthCallback } from "./pages/AuthCallback.js";
 import { Search } from "./pages/Search.js";
 import "./App.css"
+
+const Library = () => (
+  <div className="p-4 text-wmp-blue"> Library (coming soon)</div>
+);
+
+const NowPlaying = () => (
+  <div className="p-4 text-wmp-blue">Now Playing (coming soon)</div>
+);
+
 
 export default function App() {
     return (
@@ -11,17 +21,14 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route
-            path="/library"
-            element={<div className="text-wmp-blue">Library (coming soon)</div>}
-          />
-          <Route path="/search" element={<Search />} />
-          <Route
-            path="/now-playing"
-            element={
-              <div className="text-wmp-blue">Now Playing (coming soon)</div>
-            }
-          />
+
+          <Route element={<RequireAuth />}>
+            <Route path="/library" element={<Library />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/now-playing" element={<NowPlaying />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </WindowFrame>
     );
