@@ -1,4 +1,5 @@
 import type { ReactElement } from "react";
+import { Link } from "react-router-dom";
 import { useLibrary } from "../hooks/useLibrary.js";
 import { useUserPlaylists } from "../hooks/usePlaylist.js";
 import { Spinner } from "../components/ui/Spinner.js";
@@ -57,7 +58,7 @@ export const Library = (): ReactElement => {
                 {playlists && playlists.items.length > 0 ? (
                 <div className="library-playlists">
                     {playlists.items.map((playlist) => (
-                    <div key={playlist.id} className="library-playlist-card">
+                    <Link key={playlist.id} to={`/playlist/${playlist.id}`} className="library-playlist-card">
                         {playlist.images?.[0]?.url && (
                         <img
                             src={playlist.images[0].url}
@@ -67,9 +68,9 @@ export const Library = (): ReactElement => {
                         )}
                         <div className="library-playlist-name">{playlist.name}</div>
                         <div className="library-playlist-count">
-                        {playlist.tracks?.total ?? 0} tracks
+                        {playlist.items?.total ?? 0} tracks
                         </div>
-                    </div>
+                    </Link>
                     ))}
                 </div>
                 ) : (
