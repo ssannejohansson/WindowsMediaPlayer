@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
-import { useLibrary } from "../../hooks/useLibrary.js";
-import { usePlaylist } from "../../hooks/usePlaylist.js";
-import { Spinner } from "../ui/Spinner.js";
+import { useLibrary } from "../hooks/useLibrary.js";
+import { useUserPlaylists } from "../hooks/usePlaylist.js";
+import { Spinner } from "../components/ui/Spinner.js";
 import "./library.css";
 
 export const Library = (): ReactElement => {
@@ -9,7 +9,7 @@ export const Library = (): ReactElement => {
     const { data: likedSongs, isLoading: likedLoading } = useLibrary();
 
     // Fetch user's playlists (created or followed)
-    const { data. playlists, isLoading: playlistsLoading } = usePlaylist();
+    const { data: playlists, isLoading: playlistsLoading } = useUserPlaylists();
 
     if (likedLoading || playlistsLoading) {
         return <Spinner />;
