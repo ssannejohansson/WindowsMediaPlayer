@@ -1,4 +1,8 @@
-.wmp-window {
-  border-style: inset;
-  border-color: #d4d0c8;
+/* Scrollable content area — fills wmp-content above the player bar */
+.app-content {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
