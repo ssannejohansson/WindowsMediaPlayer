@@ -77,7 +77,7 @@ export const Playlist = (): ReactElement => {
                 <div
                   key={item.item!.id}
                   className="playlist-track-row"
-                  onClick={() => playTrack([item.item!.uri], undefined, deviceId)}
+                  onClick={() => playTrack(undefined, playlist.uri, deviceId, { uri: item.item!.uri })}
                 >
                   <div className="playlist-tracks-number">{idx + 1}</div>
                   <div className="playlist-tracks-name">{item.item!.name}</div>

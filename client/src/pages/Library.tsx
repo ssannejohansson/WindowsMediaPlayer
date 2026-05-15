@@ -26,8 +26,8 @@ export const Library = (): ReactElement => {
                 <h2 className="library-heading">Liked Songs</h2>
                 {likedSongs && likedSongs.items.length > 0 ? (
                 <div className="library-tracks">
-                    {likedSongs.items.map((item) => (
-                    <div key={item.track.id} className="library-track-row" onClick={() => playTrack([item.track.uri], undefined, deviceId)}>
+                    {likedSongs.items.map((item, idx) => (
+                    <div key={item.track.id} className="library-track-row" onClick={() => playTrack(likedSongs.items.map((i) => i.track.uri), undefined, deviceId, { position: idx })}>
                         <div className="library-track-art">
                         {item.track.album?.images?.[0]?.url && (
                             <img
