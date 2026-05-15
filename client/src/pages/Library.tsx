@@ -2,9 +2,13 @@ import type { ReactElement } from "react";
 import { useLibrary } from "../hooks/useLibrary.js";
 import { useUserPlaylists } from "../hooks/usePlaylist.js";
 import { Spinner } from "../components/ui/Spinner.js";
+import { playTrack } from "../lib/playerApi.js";
+import { usePlayerStore } from "../stores/usePlayerStore.js";
 import "./library.css";
 
 export const Library = (): ReactElement => {
+    const deviceId = usePlayerStore((s) => s.deviceId);
+
     // Fetch the users liked songs (saved tracks from Spotify)
     const { data: likedSongs, isLoading: likedLoading } = useLibrary();
 
@@ -22,7 +26,7 @@ export const Library = (): ReactElement => {
                 {likedSongs && likedSongs.items.length > 0 ? (
                 <div className="library-tracks">
                     {likedSongs.items.map((item) => (
-                    <div key={item.track.id} className="library-track-row">
+                    <div key={item.track.id} className="library-track-row" onClick={() => playTrack([item.track.uri], undefined, deviceId)}>
                         <div className="library-track-art">
                         {item.track.album?.images?.[0]?.url && (
                             <img
