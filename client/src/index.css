@@ -22,7 +22,7 @@ html, body {
 }
 
 body {
-    background: linear-gradient(180deg, #1a4e9e 0%, #2968c8 100%);
+    background: url('/old-school-bg.jpg') center center / cover no-repeat fixed;
     min-height: 100vh;
 }
 
