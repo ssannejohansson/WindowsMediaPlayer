@@ -1,0 +1,171 @@
+/* Player bar — single row, WMP XP style */
+.player-bar {
+    background: #d4d0c8;
+    border-top: 2px inset #aaa;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 6px;
+    min-height: 36px;
+}
+
+/* Standard WMP XP button — gray, raised, slightly rounded */
+.player-control-btn {
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+    border-radius: 3px;
+    color: #000;
+    width: 28px;
+    height: 26px;
+    cursor: pointer;
+    font-size: 9px;
+    font-family: Tahoma, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.player-control-btn:hover {
+    background: #dedad2;
+}
+
+.player-control-btn:active {
+    border-style: inset;
+}
+
+/* Stop button — larger icon */
+.player-control-btn-stop {
+    font-size: 18px;
+}
+
+/* Play button gets a blue tint — matches the wireframe highlight */
+.player-control-btn-play {
+    background: #c0d8f0;
+    border-color: #90b8d8;
+}
+
+.player-control-btn-play:hover {
+    background: #cce4ff;
+}
+
+.player-control-btn-play:active {
+    border-style: inset;
+}
+
+/* Volume button — icon + dropdown arrow, same base style */
+.player-vol-btn {
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+    border-radius: 3px;
+    color: #000;
+    height: 26px;
+    padding: 0 4px;
+    cursor: pointer;
+    font-size: 9px;
+    font-family: Tahoma, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.player-vol-btn:hover {
+    background: #dedad2;
+}
+
+.player-vol-btn:active {
+    border-style: inset;
+}
+
+.player-vol-arrow {
+    font-size: 7px;
+    line-height: 1;
+}
+
+/* Vertical separator between volume and seek */
+.player-bar-sep {
+    width: 2px;
+    height: 20px;
+    border-left: 1px solid #888;
+    border-right: 1px solid #f0ece4;
+    flex-shrink: 0;
+    margin: 0 3px;
+}
+
+/* Volume slider — short */
+.player-vol-slider {
+    width: 72px;
+    flex-shrink: 0;
+}
+
+/* Seek/progress slider — fills remaining space */
+.player-seek-slider {
+    flex: 1;
+    min-width: 40px;
+}
+
+/* Shared range input styling — XP slider look */
+.player-vol-slider,
+.player-seek-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.player-vol-slider::-webkit-slider-runnable-track,
+.player-seek-slider::-webkit-slider-runnable-track {
+    height: 4px;
+    background: #b0aca4;
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #e8e4dc;
+    border-radius: 0;
+}
+
+.player-vol-slider::-webkit-slider-thumb,
+.player-seek-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 11px;
+    height: 20px;
+    margin-top: -8px;
+    background: linear-gradient(180deg, #e8e4dc 0%, #c8c4bc 100%);
+    border: 2px outset #d4d0c8;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.player-vol-slider::-moz-range-track,
+.player-seek-slider::-moz-range-track {
+    height: 4px;
+    background: #b0aca4;
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #e8e4dc;
+}
+
+.player-vol-slider::-moz-range-thumb,
+.player-seek-slider::-moz-range-thumb {
+    width: 11px;
+    height: 20px;
+    background: linear-gradient(180deg, #e8e4dc 0%, #c8c4bc 100%);
+    border: 2px outset #d4d0c8;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+/* Time display — "0:00 / 3:45" */
+.player-bar-time {
+    font-size: 11px;
+    color: #000;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-family: Tahoma, sans-serif;
+    padding-left: 2px;
+}

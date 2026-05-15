@@ -1,0 +1,158 @@
+/* NowPlaying Container — portrait layout matching the wireframe */
+.nowplaying-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: #ece9d8;
+    min-height: 100%;
+    color: #000;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    overflow-y: auto;
+}
+
+/* Album Art — large, close to full width */
+.nowplaying-album-section {
+    width: 100%;
+    max-width: 280px;
+    flex: 0 0 auto;
+}
+
+.nowplaying-album-art {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border: 2px inset #d4d0c8;
+    display: block;
+}
+
+/* Track Info — centered text, black */
+.nowplaying-info-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-align: center;
+    width: 100%;
+    max-width: 320px;
+}
+
+.nowplaying-track-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.nowplaying-artist-name {
+    font-size: 11px;
+    color: #0a246a;
+    font-weight: bold;
+}
+
+.nowplaying-album-name {
+    font-size: 11px;
+    color: #6e6e6e;
+}
+
+/* Progress Section */
+.nowplaying-progress-section {
+    width: 100%;
+    max-width: 320px;
+}
+
+/* Playback Controls */
+.nowplaying-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.nowplaying-control-btn {
+    background: #d4d0c8;
+    color: #000;
+    border: 2px outset #d4d0c8;
+    padding: 3px 12px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: Tahoma, sans-serif;
+    min-width: 60px;
+}
+
+.nowplaying-control-btn:hover {
+    background: #cce4ff;
+}
+
+.nowplaying-control-btn:active {
+    border-style: inset;
+}
+
+.nowplaying-control-btn-play {
+    background: #1db954;
+    color: #fff;
+    border-color: #17a349;
+    font-weight: bold;
+    min-width: 80px;
+}
+
+.nowplaying-control-btn-play:hover {
+    background: #1ed760;
+}
+
+.nowplaying-control-btn-play:active {
+    border-style: inset;
+}
+
+/* Device Status */
+.nowplaying-device-status {
+    font-size: 10px;
+    padding: 2px 8px;
+    background: #f0eeea;
+    border: 1px solid #d4d0c8;
+    color: #6e6e6e;
+}
+
+.nowplaying-status-connected {
+    color: #1db954;
+    font-weight: bold;
+}
+
+.nowplaying-status-waiting {
+    color: #aa6600;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Empty State */
+.nowplaying-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    padding: 2rem;
+}
+
+.nowplaying-empty-message {
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
+}
+
+.nowplaying-empty-hint {
+    font-size: 11px;
+    color: #6e6e6e;
+    max-width: 260px;
+}

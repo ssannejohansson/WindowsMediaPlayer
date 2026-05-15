@@ -1,74 +1,122 @@
-import { useCallback } from "react";
-import { useSpotifyPlayer } from "../hooks/useSpotifyPlayer.js";
+import type { ReactElement } from "react";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
 import {
   transferPlayback,
-  playTrack,
   pausePlayback,
   nextTrack,
   previousTrack,
 } from "../lib/playerApi.js";
+import { ProgressBar } from "../components/player/ProgressBar.js";
+import "./nowplaying.css";
 
-export const NowPlaying = () => {
-  useSpotifyPlayer();
-  const { deviceId, isPlaying, currentTrack, progressMs } = usePlayerStore();
+export const NowPlaying = (): ReactElement => {
+  const { isPlaying, currentTrack, deviceId } = usePlayerStore();
 
-  const handleActivate = useCallback(async () => {
-    if (!deviceId) return;
-    try {
+  const handlePlay = async () => {
+    if (deviceId) {
       await transferPlayback(deviceId, true);
-    } catch (err) {
-      console.error("transferPlayback failed", err);
     }
-  }, [deviceId]);
+  };
 
-  const handlePlayPause = useCallback(async () => {
-    try {
-      if (isPlaying) await pausePlayback();
-      else await playTrack();
-    } catch (err) {
-      console.error("Play/pause failed", err);
+  const handlePause = async () => {
+    if (deviceId) {
+      await pausePlayback();
     }
-  }, [isPlaying]);
+  };
+
+  const handleNext = async () => {
+    if (deviceId) {
+      await nextTrack();
+    }
+  };
+
+  const handlePrev = async () => {
+    if (deviceId) {
+      await previousTrack();
+    }
+  };
 
   return (
-    <div className="p4 text-wmp-blue">
-      <div className="mb-2">
-        <div className="font-semibold">
-          {currentTrack?.name || "No track playing"}
-        </div>
-        <div className="text-sm">
-          {currentTrack?.artists?.map((a) => a.name).join(", ")}
-        </div>
-      </div>
+    <div className="nowplaying-container">
+      {currentTrack ? (
+        <>
+          {/* Large album art display */}
+          <div className="nowplaying-album-section">
+            {currentTrack.album?.images?.[0]?.url && (
+              <img
+                src={currentTrack.album.images[0].url}
+                alt={currentTrack.album?.name}
+                className="nowplaying-album-art"
+              />
+            )}
+          </div>
 
-      <div className="flex items-center gap-2">
-        <button
-          onClick={previousTrack}
-          className="px-3 py-1 bg-wmp-gray rounded"
-        >
-          Prev
-        </button>
-        <button
-          onClick={handlePlayPause}
-          className="px-4 py-2 bg-wmp-green text-white rounded"
-        >
-          {isPlaying ? "Pause" : "Play"}
-        </button>
-        <button onClick={nextTrack} className="px-3 py-1 bg-wmp-gray rounded">
-          Next
-        </button>
-        <button
-          onClick={handleActivate}
-          className="ml-4 px-3 py-1 border rounded"
-        >
-          Activate Device
-        </button>
-      </div>
+          {/* Track and artist info */}
+          <div className="nowplaying-info-section">
+            <div className="nowplaying-track-name">{currentTrack.name}</div>
+            <div className="nowplaying-artist-name">
+              {currentTrack.artists
+                .map((a: { name: string }) => a.name)
+                .join(", ")}
+            </div>
+            <div className="nowplaying-album-name">
+              {currentTrack.album?.name}
+            </div>
+          </div>
 
-      <div className="mt-3 text-sm text-wmp-textMuted">
-        Device: {deviceId || " Not connected"} • Progress: {progressMs ?? 0}ms
-      </div>
+          {/* Progress bar with elapsed and total time */}
+          <div className="nowplaying-progress-section">
+            <ProgressBar />
+          </div>
+
+          {/* Playback controls */}
+          <div className="nowplaying-controls">
+            <button
+              className="nowplaying-control-btn"
+              onClick={handlePrev}
+              title="Previous track"
+            >
+              ⏮ PREV
+            </button>
+
+            <button
+              className="nowplaying-control-btn nowplaying-control-btn-play"
+              onClick={isPlaying ? handlePause : handlePlay}
+              title={isPlaying ? "Pause" : "Play"}
+            >
+              {isPlaying ? "⏸ PAUSE" : "▶ PLAY"}
+            </button>
+
+            <button
+              className="nowplaying-control-btn"
+              onClick={handleNext}
+              title="Next track"
+            >
+              NEXT ⏭
+            </button>
+          </div>
+
+          {/* Device status indicator */}
+          <div className="nowplaying-device-status">
+            {deviceId ? (
+              <span className="nowplaying-status-connected">
+                ● Connected to device
+              </span>
+            ) : (
+              <span className="nowplaying-status-waiting">
+                ◯ Waiting for device...
+              </span>
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="nowplaying-empty">
+          <div className="nowplaying-empty-message">No track playing</div>
+          <div className="nowplaying-empty-hint">
+            Play a track from your library or search to get started
+          </div>
+        </div>
+      )}
     </div>
   );
 };
