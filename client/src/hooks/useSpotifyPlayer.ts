@@ -41,14 +41,28 @@ export const useSpotifyPlayer = () => {
 
     const start = async () => {
       try {
-        player = (await initSpotifyPlayer()) as SpotifyPlayer;
+        const { player: p, deviceId: device_id } = await initSpotifyPlayer();
+        player = p as SpotifyPlayer;
+
+        if (!mounted) return;
+
+        // Act on the initial ready event — the promise already resolved inside
+        // the SDK's "ready" listener so we can't catch it via addListener here.
+        setPlaybackState({ deviceId: device_id });
+        try {
+          await transferPlayback(device_id, true);
+        } catch (err) {
+          console.error("transferPlayback failed", err);
+        }
+
+        // Handle reconnects (e.g. device going offline and coming back).
         player.addListener(
           "ready",
-          async ({ device_id }: SpotifyPlayerReady) => {
+          async ({ device_id: id }: SpotifyPlayerReady) => {
             if (!mounted) return;
-            setPlaybackState({ deviceId: device_id });
+            setPlaybackState({ deviceId: id });
             try {
-              await transferPlayback(device_id, true);
+              await transferPlayback(id, true);
             } catch (err) {
               console.error("transferPlayback failed", err);
             }
