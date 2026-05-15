@@ -4,10 +4,10 @@ import { useAuthStore } from "../stores/useAuthStore.js";
 export const loadSpotifySDK = (): Promise<void> =>
   new Promise((resolve) => {
     if ((window as any).Spotify) return resolve();
+    (window as any).onSpotifyWebPlaybackSDKReady = resolve;
     const s = document.createElement("script");
     s.src = "https://sdk.scdn.co/spotify-player.js";
     s.async = true;
-    s.onload = () => resolve();
     document.body.appendChild(s);
   });
 

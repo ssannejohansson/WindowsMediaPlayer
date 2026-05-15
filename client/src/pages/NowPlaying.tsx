@@ -1,6 +1,5 @@
 import type { ReactElement } from "react";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
-import { useSpotifyPlayer } from "../hooks/useSpotifyPlayer.js";
 import {
   transferPlayback,
   pausePlayback,
@@ -11,9 +10,6 @@ import { ProgressBar } from "../components/player/ProgressBar.js";
 import "./nowplaying.css";
 
 export const NowPlaying = (): ReactElement => {
-  // Sync with the active Spotify player and pull the current track state.
-  useSpotifyPlayer();
-
   const { isPlaying, currentTrack, deviceId } = usePlayerStore();
 
   const handlePlay = async () => {

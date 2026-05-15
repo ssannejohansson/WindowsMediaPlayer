@@ -63,7 +63,7 @@ export const Library = (): ReactElement => {
                         )}
                         <div className="library-playlist-name">{playlist.name}</div>
                         <div className="library-playlist-count">
-                        {playlist.tracks.total} tracks
+                        {playlist.tracks?.total ?? 0} tracks
                         </div>
                     </div>
                     ))}
