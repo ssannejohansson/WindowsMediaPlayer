@@ -2,11 +2,20 @@ import type { ReactElement } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePlaylist } from "../hooks/usePlaylist.js";
 import { Spinner } from "../components/ui/Spinner.js";
+import { playTrack } from "../lib/playerApi.js";
+import { usePlayerStore } from "../stores/usePlayerStore.js";
 import "./playlist.css";
+
+const formatDuration = (ms: number) => {
+    const min = Math.floor(ms / 60000);
+    const sec = Math.floor((ms % 60000) / 1000);
+    return `${min}:${sec.toString().padStart(2, "0")}`;
+};
 
 export const Playlist = (): ReactElement => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const deviceId = usePlayerStore((s) => s.deviceId);
 
   // Fetch the specific playlist by ID.
   const { data: playlist, isLoading } = usePlaylist(id);
@@ -14,6 +23,8 @@ export const Playlist = (): ReactElement => {
   if (isLoading) {
     return <Spinner />;
   }
+
+  const trackCount = playlist?.items?.total ?? 0;
 
   if (!playlist) {
     return (
@@ -46,39 +57,38 @@ export const Playlist = (): ReactElement => {
           <div className="playlist-type">PLAYLIST</div>
           <div className="playlist-title">{playlist.name}</div>
           <div className="playlist-meta">
-            {playlist.tracks.total} tracks
+            {trackCount} tracks
             {playlist.owner && ` • By ${playlist.owner.display_name}`}
           </div>
         </div>
       </div>
 
       <div className="playlist-content">
-        {playlist.tracks.total > 0 ? (
+        {trackCount > 0 ? (
           <div className="playlist-tracks">
-            {/* Display placeholder message since we don't have track details fetched yet. */}
             <div className="playlist-tracks-header">
               <div className="playlist-tracks-number">#</div>
               <div className="playlist-tracks-name">Title</div>
               <div className="playlist-tracks-artist">Artist</div>
+              <div className="playlist-tracks-duration">Duration</div>
             </div>
 
-            {Array.from({ length: Math.min(10, playlist.tracks.total) }).map(
-              (_, idx) => (
-                <div key={idx} className="playlist-track-row">
+            {playlist.items?.items?.filter((item) => item.item).map((item, idx) => (
+                <div
+                  key={item.item!.id}
+                  className="playlist-track-row"
+                  onClick={() => playTrack([item.item!.uri], undefined, deviceId)}
+                >
                   <div className="playlist-tracks-number">{idx + 1}</div>
-                  <div className="playlist-tracks-name">
-                    (Track details loading)
+                  <div className="playlist-tracks-name">{item.item!.name}</div>
+                  <div className="playlist-tracks-artist">
+                    {item.item!.artists.map((a) => a.name).join(", ")}
                   </div>
-                  <div className="playlist-tracks-artist">-</div>
+                  <div className="playlist-tracks-duration">
+                    {formatDuration(item.item!.duration_ms)}
+                  </div>
                 </div>
-              ),
-            )}
-
-            {playlist.tracks.total > 10 && (
-              <div className="playlist-tracks-more">
-                +{playlist.tracks.total - 10} more tracks
-              </div>
-            )}
+              ))}
           </div>
         ) : (
           <div className="playlist-empty">This playlist is empty</div>

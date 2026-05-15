@@ -75,7 +75,7 @@
 
 .playlist-tracks-header {
     display: grid;
-    grid-template-columns: 50px 1fr 200px;
+    grid-template-columns: 50px 1fr 200px 80px;
     gap: 1rem;
     padding: 0.75rem 1rem;
     background: rgba(0, 120, 212, 0.3);
@@ -89,7 +89,7 @@
 
 .playlist-track-row {
     display: grid;
-    grid-template-columns: 50px 1fr 200px;
+    grid-template-columns: 50px 1fr 200px 80px;
     gap: 1rem;
     padding: 0.75rem 1rem;
     align-items: center;
@@ -120,6 +120,12 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.playlist-tracks-duration {
+    color: #00d4ff;
+    font-size: 0.875rem;
+    text-align: right;
 }
 
 .playlist-tracks-more {
