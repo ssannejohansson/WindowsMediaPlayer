@@ -1,0 +1,71 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    background: #fff;
+    gap: 0;
+    padding: 16px;
+    font-family: Tahoma, sans-serif;
+}
+
+/* Windows flag icon — four colored squares */
+.login-flag {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 14px;
+    transform: skewX(-8deg);
+}
+
+.login-flag-red   { background: #f25022; border-radius: 2px; }
+.login-flag-green { background: #7fba00; border-radius: 2px; }
+.login-flag-blue  { background: #00a4ef; border-radius: 2px; }
+.login-flag-yellow{ background: #ffb900; border-radius: 2px; }
+
+.login-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.login-subtitle {
+    font-size: 11px;
+    color: #6e6e6e;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+    padding: 4px 14px;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    color: #000;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background: #e0ddd5;
+}
+
+.login-btn:active {
+    border-style: inset;
+}
+
+.login-btn-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #1db954;
+    flex-shrink: 0;
+}

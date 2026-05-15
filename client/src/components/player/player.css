@@ -1,170 +1,171 @@
-/* Player Bar Container */ 
+/* Player bar — single row, WMP XP style */
 .player-bar {
+    background: #d4d0c8;
+    border-top: 2px inset #aaa;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.75rem;
-    background: linear-gradient(to bottom, #00aae4, #00578a);
-    border-top: 1px solid #00d4ff;
-    border-bottom: 1px solid #000;
-    min-height: 80px;
+    gap: 3px;
+    padding: 4px 6px;
+    min-height: 36px;
 }
 
-/* Track Info Section */
-.player-bar-track-info {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex: 0 0 auto;
-    width: 200px;
-}
-
-.player-bar-album-art {
-    width: 60px;
-    height: 60px;
-    border: 1px solid #00d4ff;
-    background: #000;
-}
-
-.player-bar-track-text {
-    overflow: hidden;
-}
-
-.player-bar-track-name {
-    font-size: 0.875rem; 
-    font-weight: bold;
-    color: #fff;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.player-bar-artist-name {
-    font-size: 0.75rem;
-    color: #00ff00;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-/* Control Buttons */ 
-.player-bar-controls {
+/* Standard WMP XP button — gray, raised, slightly rounded */
+.player-control-btn {
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+    border-radius: 3px;
+    color: #000;
+    width: 28px;
+    height: 26px;
+    cursor: pointer;
+    font-size: 9px;
+    font-family: Tahoma, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    flex: 0 0 auto;
-}
-
-.player-control-btn {
-    background: #0078d4;
-    color: #fff;
-    border: 2px outset #00d4ff;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    transition: all 0.1s;
+    padding: 0;
+    flex-shrink: 0;
+    line-height: 1;
 }
 
 .player-control-btn:hover {
-    background: #00a4e0;
+    background: #dedad2;
 }
 
 .player-control-btn:active {
     border-style: inset;
 }
 
+/* Stop button — larger icon */
+.player-control-btn-stop {
+    font-size: 18px;
+}
+
+/* Play button gets a blue tint — matches the wireframe highlight */
 .player-control-btn-play {
-    padding: 0.5rem 1.5rem;
-    font-size: 1.2rem;
+    background: #c0d8f0;
+    border-color: #90b8d8;
 }
 
-/* Progress and Volume Container */ 
-.player-bar-right {
+.player-control-btn-play:hover {
+    background: #cce4ff;
+}
+
+.player-control-btn-play:active {
+    border-style: inset;
+}
+
+/* Volume button — icon + dropdown arrow, same base style */
+.player-vol-btn {
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+    border-radius: 3px;
+    color: #000;
+    height: 26px;
+    padding: 0 4px;
+    cursor: pointer;
+    font-size: 9px;
+    font-family: Tahoma, sans-serif;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 2px;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.player-vol-btn:hover {
+    background: #dedad2;
+}
+
+.player-vol-btn:active {
+    border-style: inset;
+}
+
+.player-vol-arrow {
+    font-size: 7px;
+    line-height: 1;
+}
+
+/* Vertical separator between volume and seek */
+.player-bar-sep {
+    width: 2px;
+    height: 20px;
+    border-left: 1px solid #888;
+    border-right: 1px solid #f0ece4;
+    flex-shrink: 0;
+    margin: 0 3px;
+}
+
+/* Volume slider — short */
+.player-vol-slider {
+    width: 72px;
+    flex-shrink: 0;
+}
+
+/* Seek/progress slider — fills remaining space */
+.player-seek-slider {
     flex: 1;
+    min-width: 40px;
 }
 
-/* Progress bar */ 
-.progress-bara-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex: 1;
-}
-
-.progress-bar-time {
-    font-size: 0.75rem;
-    color: #fff;
-    min-width: 35px;
-    text-align: center;
-    font-weight: bold;
-}
-
-.progress-bar-track {
-    flex: 1;
-    height: 6px;
-    background: #000;
-    border: 1px solid #00d4ff;
-    position: relative;
-}
-
-.progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(to right, #00ff00, #00d4ff);
-    transition: width 0.1s linear;
-}
-
-/* Volume Control */ 
-.volume-control {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex: 0 0 auto;
-    width: 150px;
-}
-
-.volume-icon {
-    font-size: 1rem;
-}
-
-.volume-slider {
-    flex: 1;
-    height: 6px;
+/* Shared range input styling — XP slider look */
+.player-vol-slider,
+.player-seek-slider {
     -webkit-appearance: none;
     appearance: none;
-    background: #000;
-    border: 1px solid #00d4ff;
-    outline: none;
+    height: 20px;
+    background: transparent;
+    cursor: pointer;
 }
 
-.volume-slider::-webkit-slider-thumb {
+.player-vol-slider::-webkit-slider-runnable-track,
+.player-seek-slider::-webkit-slider-runnable-track {
+    height: 4px;
+    background: #b0aca4;
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #e8e4dc;
+    border-radius: 0;
+}
+
+.player-vol-slider::-webkit-slider-thumb,
+.player-seek-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    appearance: none;
-    width: 12px;
-    height: 12px;
-    background: #00ff00;
+    width: 11px;
+    height: 20px;
+    margin-top: -8px;
+    background: linear-gradient(180deg, #e8e4dc 0%, #c8c4bc 100%);
+    border: 2px outset #d4d0c8;
+    border-radius: 2px;
     cursor: pointer;
-    border: 1px solid #fff;
 }
 
-.volume-slider::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
-    background: #00ff00;
-    cursor: pointer;
-    border: 1px solid #fff;
+.player-vol-slider::-moz-range-track,
+.player-seek-slider::-moz-range-track {
+    height: 4px;
+    background: #b0aca4;
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #e8e4dc;
 }
 
-.volume-label {
-    font-size: 0.75rem;
-    color: #fff;
-    min-width: 35px;
-    text-align: right;
-    font-weight: bold;
+.player-vol-slider::-moz-range-thumb,
+.player-seek-slider::-moz-range-thumb {
+    width: 11px;
+    height: 20px;
+    background: linear-gradient(180deg, #e8e4dc 0%, #c8c4bc 100%);
+    border: 2px outset #d4d0c8;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+/* Time display — "0:00 / 3:45" */
+.player-bar-time {
+    font-size: 11px;
+    color: #000;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-family: Tahoma, sans-serif;
+    padding-left: 2px;
 }

@@ -9,12 +9,13 @@ import { Library } from "./pages/Library.js";
 import { NowPlaying } from "./pages/NowPlaying.js";
 import { Playlist } from "./pages/Playlist.js";
 import { Equalizer } from "./pages/Equalizer.js";
+import "./App.css";
 import "./components/player/player.css";
 
 export default function App() {
   return (
     <WindowFrame title="Windows Media Player">
-      <div className="app-layout">
+      <div className="app-content">
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
@@ -29,9 +30,9 @@ export default function App() {
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-
-        <PlayerBar />
       </div>
+
+      <PlayerBar />
     </WindowFrame>
   );
 }
