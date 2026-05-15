@@ -40,6 +40,11 @@ export interface Track {
     duration_ms: number
 }
 
+export interface PlaylistTrackItem {
+    added_at: string
+    item: Track | null  // null for local files or podcast episodes; Spotify API uses "item" not "track"
+}
+
 export interface Playlist {
     collaborative: boolean
     external_urls: { spotify: string }
@@ -51,7 +56,8 @@ export interface Playlist {
     public: boolean
     type: "playlist"
     uri: string
-    tracks: { href: string; total: number }
+    // Spotify now uses "items" for both simplified (/me/playlists) and full (/playlists/:id) responses
+    items?: { href: string; total: number; items?: PlaylistTrackItem[]; next?: string }
 }
 
 export interface SearchResponse {

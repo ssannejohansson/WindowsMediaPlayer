@@ -1,10 +1,12 @@
+import "./menubar.css";
+
 export const MenuBar = () => {
-    const menuItems = ["File", "Edit", "View", "Help"];
+    const menuItems = ["File", "View", "Play", "Tools", "Help"];
 
     return (
-        <div className="flex items-center h-6 px-2 bg-wmp-grayDark border-b border-wmp-grayDark">
+        <div className="wmp-menubar">
             {menuItems.map((item) => (
-                <button key={item} className="px-3 text-xs text-wmp-text hover:bg-wmp-gray transition-colors">
+                <button key={item} type="button" className="wmp-menu-item">
                     {item}
                 </button>
             ))}

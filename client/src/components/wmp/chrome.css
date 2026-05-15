@@ -1,0 +1,108 @@
+/* Content area between menu bar and player bar */
+.wmp-content {
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+    background: #ece9d8;
+    display: flex;
+    flex-direction: column;
+}
+
+/* WMP window frame */
+.wmp-window {
+    width: 400px;
+    height: min(620px, 90vh);
+    display: flex;
+    flex-direction: column;
+    border: 2px outset #d4d0c8;
+    box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+}
+
+/* Title bar */
+.wmp-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 26px;
+    padding: 0 4px 0 6px;
+    background: linear-gradient(90deg, #0a246a 0%, #3a6ea5 100%);
+    flex-shrink: 0;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.wmp-titlebar-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow: hidden;
+    flex: 1;
+}
+
+/* WMP icon — orange circle with play triangle */
+.wmp-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #ff9d2b, #c45800);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.wmp-icon::after {
+    content: '▶';
+    font-size: 6px;
+    color: #fff;
+    margin-left: 1px;
+}
+
+.wmp-titlebar-title {
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Window control buttons */
+.wmp-titlebar-buttons {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+    margin-left: 6px;
+}
+
+.wmp-btn-chrome {
+    width: 16px;
+    height: 14px;
+    border: 1px outset #aac3e0;
+    background: linear-gradient(180deg, #6ea6d8 0%, #3a6ea5 100%);
+    color: #fff;
+    font-size: 9px;
+    font-family: Tahoma, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+
+.wmp-btn-chrome:active {
+    border-style: inset;
+}
+
+.wmp-btn-close {
+    background: linear-gradient(180deg, #e06060 0%, #b82020 100%);
+    border-color: #e08080;
+}
+
+.wmp-btn-close:hover {
+    background: linear-gradient(180deg, #ff7070 0%, #d03030 100%);
+}

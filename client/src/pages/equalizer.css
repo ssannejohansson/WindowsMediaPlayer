@@ -1,0 +1,150 @@
+/* Equalizer Container */
+.equalizer-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    background: #ece9d8;
+    min-height: 100%;
+    color: #000;
+    overflow-y: auto;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+}
+
+/* Header */
+.equalizer-header {
+    text-align: center;
+    padding: 4px;
+}
+
+.equalizer-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 2px;
+}
+
+.equalizer-subtitle {
+    font-size: 11px;
+    color: #6e6e6e;
+}
+
+/* Preset Buttons */
+.equalizer-presets {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    padding: 6px;
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+}
+
+.equalizer-preset-btn {
+    background: #d4d0c8;
+    color: #000;
+    border: 2px outset #d4d0c8;
+    padding: 2px 8px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: Tahoma, sans-serif;
+}
+
+.equalizer-preset-btn:hover {
+    background: #cce4ff;
+}
+
+.equalizer-preset-btn.active {
+    border-style: inset;
+    background: #316ac5;
+    color: #fff;
+}
+
+.equalizer-preset-btn:active {
+    border-style: inset;
+}
+
+/* Equalizer Bands — dark panel, authentic WMP EQ look */
+.equalizer-bands {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 4px;
+    padding: 12px 8px;
+    background: #1a1a1a;
+    border: 2px inset #d4d0c8;
+    min-height: 220px;
+    align-items: center;
+}
+
+/* Individual Band */
+.equalizer-band {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.equalizer-band-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #00cc00;
+    text-align: center;
+    font-family: Tahoma, sans-serif;
+}
+
+/* Vertical slider — standards-compliant, fixes the deprecation warning */
+.equalizer-slider {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    width: 24px;
+    height: 130px;
+    cursor: pointer;
+    accent-color: #1db954;
+}
+
+.equalizer-band-value {
+    font-size: 10px;
+    color: #00cc00;
+    text-align: center;
+    min-height: 14px;
+    font-family: Tahoma, sans-serif;
+}
+
+/* Footer */
+.equalizer-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 6px 8px;
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+}
+
+.equalizer-reset-btn {
+    background: #d4d0c8;
+    color: #000;
+    border: 2px outset #d4d0c8;
+    padding: 2px 12px;
+    cursor: pointer;
+    font-size: 11px;
+    font-family: Tahoma, sans-serif;
+}
+
+.equalizer-reset-btn:hover {
+    background: #ffcccc;
+}
+
+.equalizer-reset-btn:active {
+    border-style: inset;
+}
+
+.equalizer-info {
+    font-size: 11px;
+    color: #000;
+}
+
+.equalizer-preset-name {
+    font-weight: bold;
+    color: #0a246a;
+}

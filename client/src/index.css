@@ -12,3 +12,24 @@
 
   --font-sans: Tahoma, sans-serif;
 }
+
+/* Desktop background — the "surface" the WMP window floats on */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background: url('/old-school-bg.jpg') center center / cover no-repeat fixed;
+    min-height: 100vh;
+}
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 28px 0 28px;
+}
