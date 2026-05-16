@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
 import "./nowplaying.css";
+import "./playlist.css";
 
 export const NowPlaying = (): ReactElement => {
   const { currentTrack } = usePlayerStore();
@@ -9,9 +10,11 @@ export const NowPlaying = (): ReactElement => {
 
   return (
     <div className="nowplaying-container">
-      <button type="button" className="nowplaying-back-btn" onClick={() => navigate("/library")}>
-        ◀ Back to Library
-      </button>
+      <div className="nowplaying-topbar">
+        <button type="button" className="playlist-back-btn" onClick={() => navigate("/library")}>
+          ← Back to Library
+        </button>
+      </div>
 
       {currentTrack ? (
         <div className="nowplaying-center">

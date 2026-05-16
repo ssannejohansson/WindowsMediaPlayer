@@ -39,13 +39,19 @@
     border-style: inset;
 }
 
-/* Stop button — larger icon */
+/* Stop button */
 .player-control-btn-stop {
-    font-size: 18px;
+    font-size: 27px;
+    padding-bottom: 3px;
 }
 
 /* Play button gets a blue tint — matches the wireframe highlight */
+.player-pause-icon {
+    font-size: 18px;
+}
+
 .player-control-btn-play {
+    font-size: 13px;
     background: #c0d8f0;
     border-color: #90b8d8;
 }

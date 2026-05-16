@@ -75,7 +75,7 @@
 
 .playlist-tracks-header {
     display: grid;
-    grid-template-columns: 36px 2fr 1fr 64px;
+    grid-template-columns: 24px 2fr 1fr 64px;
     gap: 4px;
     padding: 2px 6px;
     background: #d4d0c8;
@@ -87,7 +87,7 @@
 
 .playlist-track-row {
     display: grid;
-    grid-template-columns: 36px 2fr 1fr 64px;
+    grid-template-columns: 24px 2fr 1fr 64px;
     gap: 4px;
     padding: 2px 6px;
     align-items: center;
@@ -108,7 +108,7 @@
 }
 
 .playlist-tracks-number {
-    text-align: center;
+    text-align: left;
     color: #6e6e6e;
 }
 
@@ -188,8 +188,9 @@
     border-style: inset;
 }
 
-.playlist-back-btn {
-    align-self: flex-start;
+.playlist-topbar {
+    display: flex;
+    justify-content: flex-start;
 }
 
 /* Mobile: drop artist and duration columns, widen title */

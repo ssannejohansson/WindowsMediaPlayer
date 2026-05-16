@@ -1,7 +1,8 @@
 import type { ReactElement } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePlaylist } from "../hooks/usePlaylist.js";
-import { Spinner } from "../components/ui/Spinner.js";
+import { PlaylistSkeleton } from "../components/ui/PlaylistSkeleton.js";
+import { ErrorMessage } from "../components/ui/ErrorMessage.js";
 import { playTrack } from "../lib/playerApi.js";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
 import "./playlist.css";
@@ -18,10 +19,21 @@ export const Playlist = (): ReactElement => {
   const deviceId = usePlayerStore((s) => s.deviceId);
 
   // Fetch the specific playlist by ID.
-  const { data: playlist, isLoading } = usePlaylist(id);
+  const { data: playlist, isLoading, isError, refetch } = usePlaylist(id ?? null);
 
   if (isLoading) {
-    return <Spinner />;
+    return <PlaylistSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <div className="playlist-container">
+        <ErrorMessage
+          message="Could not load this playlist. Check your connection and try again."
+          onRetry={() => refetch()}
+        />
+      </div>
+    );
   }
 
   const trackCount = playlist?.items?.total ?? 0;
@@ -44,6 +56,11 @@ export const Playlist = (): ReactElement => {
 
   return (
     <div className="playlist-container">
+      <div className="playlist-topbar">
+        <button type="button" onClick={() => navigate("/library")} className="playlist-back-btn">
+          ← Back to Library
+        </button>
+      </div>
       <div className="playlist-header">
         {playlist.images?.[0]?.url && (
           <img
@@ -98,12 +115,6 @@ export const Playlist = (): ReactElement => {
         )}
       </div>
 
-      <button
-        onClick={() => navigate("/library")}
-        className="playlist-back-btn"
-      >
-        ← Back to Library
-      </button>
     </div>
   );
 };

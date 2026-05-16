@@ -7,19 +7,13 @@ export const Login = () => {
 
     return (
         <div className="login-container">
-            {/* Windows flag logo */}
-            <div className="login-flag">
-                <div className="login-flag-red" />
-                <div className="login-flag-green" />
-                <div className="login-flag-blue" />
-                <div className="login-flag-yellow" />
-            </div>
+            <img src="/windows-logo.png" alt="Windows logo" className="login-windows-logo" />
 
             <p className="login-title">Spotify Clone</p>
             <p className="login-subtitle">All your music. Just like the 2000s.</p>
 
             <button type="button" className="login-btn" onClick={handleLogin}>
-                <div className="login-btn-icon" />
+                <img src="/spotify-logo-black.png" alt="Spotify" className="login-btn-icon" />
                 Log in with Spotify
             </button>
         </div>

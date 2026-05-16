@@ -6,3 +6,15 @@
     display: flex;
     flex-direction: column;
 }
+
+@keyframes pageFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.page-transition {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    animation: pageFadeIn 120ms ease-in;
+}

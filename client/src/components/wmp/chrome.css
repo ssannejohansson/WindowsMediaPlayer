@@ -53,19 +53,8 @@
 .wmp-icon {
     width: 16px;
     height: 16px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 40%, #ff9d2b, #c45800);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    object-fit: contain;
     flex-shrink: 0;
-}
-
-.wmp-icon::after {
-    content: '▶';
-    font-size: 6px;
-    color: #fff;
-    margin-left: 1px;
 }
 
 .wmp-titlebar-title {
@@ -105,6 +94,11 @@
 
 .wmp-btn-chrome:active {
     border-style: inset;
+}
+
+.wmp-btn-maximize {
+    font-size: 13px;
+    padding-bottom: 2px;
 }
 
 .wmp-btn-close {

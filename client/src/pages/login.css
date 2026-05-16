@@ -10,21 +10,12 @@
     font-family: Tahoma, sans-serif;
 }
 
-/* Windows flag icon — four colored squares */
-.login-flag {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px;
-    width: 64px;
-    height: 64px;
+.login-windows-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
     margin-bottom: 14px;
-    transform: skewX(-8deg);
 }
-
-.login-flag-red   { background: #f25022; border-radius: 2px; }
-.login-flag-green { background: #7fba00; border-radius: 2px; }
-.login-flag-blue  { background: #00a4ef; border-radius: 2px; }
-.login-flag-yellow{ background: #ffb900; border-radius: 2px; }
 
 .login-title {
     font-size: 15px;
@@ -63,9 +54,8 @@
 }
 
 .login-btn-icon {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #1db954;
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
     flex-shrink: 0;
 }

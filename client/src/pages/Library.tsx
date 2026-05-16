@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { useLibrary } from "../hooks/useLibrary.js";
 import { useUserPlaylists } from "../hooks/usePlaylist.js";
 import { useRecentlyPlayed } from "../hooks/useRecentlyPlayed.js";
-import { Spinner } from "../components/ui/Spinner.js";
+import { LibrarySkeleton } from "../components/ui/LibrarySkeleton.js";
+import { ErrorMessage } from "../components/ui/ErrorMessage.js";
 import { playTrack } from "../lib/playerApi.js";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
 import "./library.css";
@@ -18,16 +19,24 @@ export const Library = (): ReactElement => {
     const deviceId = usePlayerStore((s) => s.deviceId);
 
     // Fetch the users liked songs (saved tracks from Spotify)
-    const { data: likedSongs, isLoading: likedLoading } = useLibrary();
-
-    // Fetch user's playlists (created or followed)
-    const { data: playlists, isLoading: playlistsLoading } = useUserPlaylists();
-
+    const { data: likedSongs, isLoading: likedLoading, isError: likedError, refetch: refetchLiked } = useLibrary();
+    const { data: playlists, isLoading: playlistsLoading, isError: playlistsError, refetch: refetchPlaylists } = useUserPlaylists();
     const { data: recentlyPlayed } = useRecentlyPlayed();
 
     if (likedLoading || playlistsLoading) {
-        return <Spinner />;
-    };
+        return <LibrarySkeleton />;
+    }
+
+    if (likedError || playlistsError) {
+        return (
+            <div className="library-container">
+                <ErrorMessage
+                    message="Could not load your library. Check your connection and try again."
+                    onRetry={() => { refetchLiked(); refetchPlaylists(); }}
+                />
+            </div>
+        );
+    }
 
     return (
         <div className="library-container">

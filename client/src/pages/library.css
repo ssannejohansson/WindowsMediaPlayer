@@ -19,8 +19,9 @@
     color: #000;
     margin: 0 0 4px 0;
     padding: 2px 4px;
-    background: linear-gradient(to right, #3a6ea5, #7ba7d4);
-    color: #fff;
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+    color: #000;
 }
 
 /* Liked Songs Track List */
@@ -183,12 +184,16 @@
     align-items: center;
     gap: 3px;
     flex: 0 0 72px;
+    width: 72px;
+    max-width: 72px;
+    overflow: hidden;
     background: #f0eeea;
     border: 2px outset #d4d0c8;
     padding: 4px;
     cursor: pointer;
     font-family: Tahoma, sans-serif;
     text-align: center;
+    box-sizing: border-box;
 }
 
 .library-recent-item:hover {
