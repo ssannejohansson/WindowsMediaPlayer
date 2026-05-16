@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAuthStore } from "../stores/useAuthStore";
 
 export const spotifyClient = axios.create({
-    baseURL: "https://api.spotify.com/BROKEN",
+    baseURL: "https://api.spotify.com/v1",
 });
 
 // Request interceptor: attach access token

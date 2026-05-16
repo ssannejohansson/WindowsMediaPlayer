@@ -20,20 +20,22 @@ export default function App() {
   return (
     <WindowFrame title="Windows Media Player">
       <div className="app-content">
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
+        <div key={location.key} className="page-transition">
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
 
-          <Route element={<RequireAuth />}>
-            <Route path="/library" element={<Library />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/now-playing" element={<NowPlaying />} />
-            <Route path="/playlist/:id" element={<Playlist />} />
-            <Route path="/equalizer" element={<Equalizer />} />
-          </Route>
+            <Route element={<RequireAuth />}>
+              <Route path="/library" element={<Library />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/now-playing" element={<NowPlaying />} />
+              <Route path="/playlist/:id" element={<Playlist />} />
+              <Route path="/equalizer" element={<Equalizer />} />
+            </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
       </div>
 
       {!isNowPlaying && <NowPlayingBar />}

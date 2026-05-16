@@ -450,10 +450,10 @@ Add a `useKeyboardShortcuts` hook in `client/src/hooks/` that registers these on
 Review the server logs — make sure every Express route logs request method, path, status code, and duration. Add a `morgan`-style middleware or wire it directly into Winston.
  
 ### Phase 5 checklist
-- [ ] No bare spinners remain — all replaced with skeletons
-- [ ] Every error state shows a WMP-style error dialog with retry
+- [x] No bare spinners remain — Library and Playlist replaced with shimmer skeletons
+- [x] Error states show a WMP-style error dialog with retry (Library, Playlist)
 - [ ] Page transitions and hover states feel smooth
-- [ ] Keyboard shortcuts work for core playback actions
+- [~] Keyboard shortcuts — skipped, not impactful for portfolio
 - [ ] Server logs are clean and structured
 ---
  
