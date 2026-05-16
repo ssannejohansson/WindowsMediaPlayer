@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { WindowFrame } from "./components/wmp/WindowFrame";
+import { Taskbar } from "./components/wmp/Taskbar";
 import { PlayerBar } from "./components/player/PlayerBar.js";
 import { NowPlayingBar } from "./components/player/NowPlayingBar.js";
 import { RequireAuth } from "./components/routing/RequireAuth.js";
@@ -16,26 +17,30 @@ export default function App() {
   const isNowPlaying = location.pathname === "/now-playing";
 
   return (
-    <WindowFrame title="Windows Media Player">
-      <div className="app-content">
-        <div key={location.key} className="page-transition">
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
+    <>
+      <WindowFrame title="Windows Media Player">
+        <div className="app-content">
+          <div key={location.key} className="page-transition">
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/auth/callback" element={<AuthCallback />} />
 
-            <Route element={<RequireAuth />}>
-              <Route path="/library" element={<Library />} />
-              <Route path="/now-playing" element={<NowPlaying />} />
-              <Route path="/playlist/:id" element={<Playlist />} />
-            </Route>
+              <Route element={<RequireAuth />}>
+                <Route path="/library" element={<Library />} />
+                <Route path="/now-playing" element={<NowPlaying />} />
+                <Route path="/playlist/:id" element={<Playlist />} />
+              </Route>
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
         </div>
-      </div>
 
-      {!isNowPlaying && <NowPlayingBar />}
-      <PlayerBar />
-    </WindowFrame>
+        {!isNowPlaying && <NowPlayingBar />}
+        <PlayerBar />
+      </WindowFrame>
+
+      <Taskbar />
+    </>
   );
 }

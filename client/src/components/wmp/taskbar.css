@@ -1,0 +1,164 @@
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: #d4d0c8;
+    border-top: 1px solid #ffffff;
+    box-shadow: inset 0 1px 0 #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 0 12px 0 2px;
+    z-index: 1000;
+    -webkit-user-select: none;
+    user-select: none;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+}
+
+/* Start button */
+.taskbar-start {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    padding: 0 8px;
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+    cursor: pointer;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    color: #000;
+    flex-shrink: 0;
+}
+
+.taskbar-start:hover {
+    background: #e0ddd5;
+}
+
+.taskbar-start:active {
+    border-style: inset;
+}
+
+.taskbar-start-logo {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* Vertical separator */
+.taskbar-divider {
+    width: 2px;
+    height: 22px;
+    border-left: 1px solid #a8a4a0;
+    border-right: 1px solid #ffffff;
+    flex-shrink: 0;
+    margin: 0 2px;
+}
+
+/* Quick launch */
+.taskbar-quicklaunch {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.taskbar-ql-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+}
+
+.taskbar-ql-btn:hover {
+    border: 1px solid #a8a4a0;
+    background: #e0ddd5;
+}
+
+.taskbar-ql-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* IE "e" icon */
+.taskbar-ql-ie {
+    font-family: "Times New Roman", serif;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: bold;
+    color: #1e6fcf;
+    text-shadow: 1px 0 0 #ffa500;
+}
+
+/* Active window buttons */
+.taskbar-buttons {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.taskbar-window-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    max-width: 160px;
+    padding: 0 6px;
+    background: #d4d0c8;
+    border: 2px outset #d4d0c8;
+    cursor: pointer;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    color: #000;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.taskbar-window-btn--active {
+    border-style: inset;
+    background: #c8c4bc;
+    font-weight: bold;
+}
+
+.taskbar-window-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* System tray */
+.taskbar-tray {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    height: 100%;
+}
+
+.taskbar-tray-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    cursor: default;
+}
+
+.taskbar-clock {
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    color: #000;
+    padding-right: 4px;
+}
