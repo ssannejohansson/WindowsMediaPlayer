@@ -149,6 +149,75 @@
     color: #6e6e6e;
 }
 
+/* Recently played horizontal strip */
+.library-recent-strip {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.library-recent-strip::-webkit-scrollbar {
+    height: 6px;
+}
+
+.library-recent-strip::-webkit-scrollbar-track {
+    background: #d4d0c8;
+}
+
+.library-recent-strip::-webkit-scrollbar-thumb {
+    background: #a8a4a0;
+}
+
+.library-recent-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    flex: 0 0 72px;
+    background: #f0eeea;
+    border: 2px outset #d4d0c8;
+    padding: 4px;
+    cursor: pointer;
+    font-family: Tahoma, sans-serif;
+    text-align: center;
+}
+
+.library-recent-item:hover {
+    background: #cce4ff;
+}
+
+.library-recent-item:active {
+    border-style: inset;
+}
+
+.library-recent-art {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 1px solid #d4d0c8;
+    flex-shrink: 0;
+}
+
+.library-recent-name {
+    font-size: 10px;
+    font-weight: bold;
+    color: #000;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.library-recent-artist {
+    font-size: 10px;
+    color: #6e6e6e;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* Heart / like button */
 .heart-btn {
     background: none;
