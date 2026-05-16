@@ -169,3 +169,52 @@
     font-family: Tahoma, sans-serif;
     padding-left: 2px;
 }
+
+/* Mobile: tappable info area (art + track name) — hidden on desktop */
+.player-mobile-info {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.player-mobile-art {
+    display: block;
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border: 1px solid #b0aca4;
+    flex-shrink: 0;
+}
+
+.player-mobile-track {
+    font-size: 11px;
+    font-weight: bold;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+/* Compact mobile skin — slim bar with art, track name, play/pause only */
+@media (max-width: 768px) {
+    .player-mobile-info {
+        display: flex;
+    }
+
+    .player-desktop-only {
+        display: none !important;
+    }
+
+    .player-bar {
+        gap: 8px;
+        padding: 4px 8px;
+    }
+}

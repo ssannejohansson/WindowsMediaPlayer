@@ -83,3 +83,9 @@
     0%, 100% { transform: scaleY(0.25); }
     50%       { transform: scaleY(1); }
 }
+
+@media (max-width: 768px) {
+    .now-playing-bar {
+        display: none;
+    }
+}

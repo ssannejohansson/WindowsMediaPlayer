@@ -211,3 +211,16 @@
 .playlist-back-btn {
     align-self: flex-start;
 }
+
+/* Mobile: drop artist and duration columns, widen title */
+@media (max-width: 768px) {
+    .playlist-tracks-header,
+    .playlist-track-row {
+        grid-template-columns: 28px 1fr 28px;
+    }
+
+    .playlist-tracks-artist,
+    .playlist-tracks-duration {
+        display: none;
+    }
+}
