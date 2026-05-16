@@ -9,7 +9,7 @@ export const TitleBar = ({ title }: TitleBarProps) => {
         <div className="wmp-titlebar">
             <div className="wmp-titlebar-left">
                 {/* WMP orange icon */}
-                <div className="wmp-icon" />
+                <img src="/wmp-logo2.png" alt="Windows Media Player" className="wmp-icon" />
                 <span className="wmp-titlebar-title">{title}</span>
             </div>
             <div className="wmp-titlebar-buttons">

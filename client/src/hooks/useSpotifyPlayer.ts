@@ -50,7 +50,7 @@ export const useSpotifyPlayer = () => {
         // the SDK's "ready" listener so we can't catch it via addListener here.
         setPlaybackState({ deviceId: device_id });
         try {
-          await transferPlayback(device_id, true);
+          await transferPlayback(device_id, false);
         } catch (err) {
           console.error("transferPlayback failed", err);
         }
@@ -62,7 +62,7 @@ export const useSpotifyPlayer = () => {
             if (!mounted) return;
             setPlaybackState({ deviceId: id });
             try {
-              await transferPlayback(id, true);
+              await transferPlayback(id, false);
             } catch (err) {
               console.error("transferPlayback failed", err);
             }
