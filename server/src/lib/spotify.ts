@@ -14,6 +14,7 @@ interface TokenResponse {
   access_token: string;
   refresh_token?: string;
   expires_in: number;
+  scope?: string;
 }
 
 export const exchangeCodeForTokens = async (
@@ -75,7 +76,9 @@ export const getSpotifyAuthorizeURL = (): string => {
       "user-read-playback-state",
       "user-modify-playback-state",
       "user-library-read",
+      "user-library-modify",
       "playlist-read-private",
+      "user-read-recently-played",
     ].join(" "),
   });
   return `https://accounts.spotify.com/authorize?${params}`;

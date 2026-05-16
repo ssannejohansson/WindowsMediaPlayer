@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePlaylist } from "../hooks/usePlaylist.js";
-import { useLikedStatus, useLikeToggle } from "../hooks/useLikedSongs.js";
 import { Spinner } from "../components/ui/Spinner.js";
 import { playTrack } from "../lib/playerApi.js";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
@@ -20,10 +19,6 @@ export const Playlist = (): ReactElement => {
 
   // Fetch the specific playlist by ID.
   const { data: playlist, isLoading } = usePlaylist(id);
-
-  const trackIds = playlist?.items?.items?.map((i) => i.item?.id).filter(Boolean) as string[] ?? [];
-  const { data: likedStatus } = useLikedStatus(trackIds);
-  const { mutate: toggleLike } = useLikeToggle();
 
   if (isLoading) {
     return <Spinner />;
@@ -75,13 +70,11 @@ export const Playlist = (): ReactElement => {
               <div className="playlist-tracks-number">#</div>
               <div className="playlist-tracks-name">Title</div>
               <div className="playlist-tracks-artist">Artist</div>
-              <div></div>
               <div className="playlist-tracks-duration">Duration</div>
             </div>
 
             {playlist.items?.items?.filter((item) => item.item).map((item, idx) => {
               const track = item.item!;
-              const isLiked = likedStatus?.[track.id] ?? false;
               return (
                 <div
                   key={track.id}
@@ -93,15 +86,6 @@ export const Playlist = (): ReactElement => {
                   <div className="playlist-tracks-artist">
                     {track.artists.map((a) => a.name).join(", ")}
                   </div>
-                  <button
-                    type="button"
-                    className={`heart-btn${isLiked ? " liked" : ""}`}
-                    title={isLiked ? "Remove from liked songs" : "Add to liked songs"}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleLike({ id: track.id, currentlyLiked: isLiked });
-                    }}
-                  >{isLiked ? '♥' : '♡'}</button>
                   <div className="playlist-tracks-duration">
                     {formatDuration(track.duration_ms)}
                   </div>

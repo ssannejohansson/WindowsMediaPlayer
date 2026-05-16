@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { usePlayerStore } from "../../stores/usePlayerStore.js";
 import { useSpotifyPlayer } from "../../hooks/useSpotifyPlayer.js";
 import {
@@ -18,6 +19,7 @@ const formatTime = (seconds: number) => {
 export const PlayerBar = (): ReactElement => {
   const { isPlaying, currentTrack, deviceId, progressMs } = usePlayerStore();
   const [volume, setVolume] = useState(70);
+  const navigate = useNavigate();
 
   // Keep the Spotify player connected and update store state from SDK events.
   useSpotifyPlayer();
@@ -42,10 +44,19 @@ export const PlayerBar = (): ReactElement => {
   const durationMs = currentTrack?.duration_ms ?? 0;
   const elapsed = formatTime(Math.floor((progressMs ?? 0) / 1000));
   const total = formatTime(Math.floor(durationMs / 1000));
+  const albumArt = currentTrack?.album?.images?.[2]?.url ?? currentTrack?.album?.images?.[0]?.url;
 
   return (
     <div className="player-bar">
-      {/* Play / Pause */}
+      {/* Mobile only: art + track name — whole area taps to NowPlaying */}
+      {currentTrack && (
+        <button type="button" className="player-mobile-info" onClick={() => navigate("/now-playing")}>
+          {albumArt && <img className="player-mobile-art" src={albumArt} alt={currentTrack.album?.name} />}
+          <span className="player-mobile-track">{currentTrack.name}</span>
+        </button>
+      )}
+
+      {/* Play / Pause — visible on both desktop and mobile */}
       <button
         type="button"
         className="player-control-btn player-control-btn-play"
@@ -56,23 +67,23 @@ export const PlayerBar = (): ReactElement => {
       </button>
 
       {/* Stop */}
-      <button type="button" className="player-control-btn player-control-btn-stop" title="Stop">{'■'}</button>
+      <button type="button" className="player-control-btn player-control-btn-stop player-desktop-only" title="Stop">{'■'}</button>
 
       {/* Previous */}
-      <button type="button" className="player-control-btn" onClick={handlePrev} title="Previous">{'◀◀'}</button>
+      <button type="button" className="player-control-btn player-desktop-only" onClick={handlePrev} title="Previous">{'◀◀'}</button>
 
       {/* Next */}
-      <button type="button" className="player-control-btn" onClick={handleNext} title="Next">{'▶▶'}</button>
+      <button type="button" className="player-control-btn player-desktop-only" onClick={handleNext} title="Next">{'▶▶'}</button>
 
       {/* Volume icon + dropdown button */}
-      <button type="button" className="player-vol-btn" title="Volume">
+      <button type="button" className="player-vol-btn player-desktop-only" title="Volume">
         {'♪'}<span className="player-vol-arrow">{'▾'}</span>
       </button>
 
       {/* Volume slider */}
       <input
         type="range"
-        className="player-vol-slider"
+        className="player-vol-slider player-desktop-only"
         min={0}
         max={100}
         value={volume}
@@ -81,12 +92,12 @@ export const PlayerBar = (): ReactElement => {
       />
 
       {/* Vertical separator */}
-      <div className="player-bar-sep" />
+      <div className="player-bar-sep player-desktop-only" />
 
       {/* Seek slider */}
       <input
         type="range"
-        className="player-seek-slider"
+        className="player-seek-slider player-desktop-only"
         min={0}
         max={durationMs || 1}
         value={progressMs ?? 0}
@@ -95,7 +106,7 @@ export const PlayerBar = (): ReactElement => {
       />
 
       {/* Time display */}
-      <span className="player-bar-time">{elapsed} / {total}</span>
+      <span className="player-bar-time player-desktop-only">{elapsed} / {total}</span>
     </div>
   );
 };
