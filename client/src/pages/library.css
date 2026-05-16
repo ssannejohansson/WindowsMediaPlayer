@@ -96,6 +96,14 @@
     white-space: nowrap;
 }
 
+.library-track-duration {
+    flex: 0 0 40px;
+    font-size: 11px;
+    color: #6e6e6e;
+    text-align: right;
+    white-space: nowrap;
+}
+
 /* Playlists Grid */
 .library-playlists {
     display: grid;
@@ -216,26 +224,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-/* Heart / like button */
-.heart-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 13px;
-    padding: 0 2px;
-    line-height: 1;
-    flex-shrink: 0;
-    color: #aaa;
-}
-
-.heart-btn.liked {
-    color: #c00;
-}
-
-.heart-btn:hover {
-    color: #c00;
 }
 
 /* Empty State */
