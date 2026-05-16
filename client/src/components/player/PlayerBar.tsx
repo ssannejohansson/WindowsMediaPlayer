@@ -8,6 +8,7 @@ import {
   pausePlayback,
   nextTrack,
   previousTrack,
+  seekTo,
 } from "../../lib/playerApi.js";
 
 const formatTime = (seconds: number) => {
@@ -41,6 +42,11 @@ export const PlayerBar = (): ReactElement => {
     if (deviceId) await previousTrack();
   };
 
+  const handleStop = async () => {
+    await pausePlayback();
+    await seekTo(0);
+  };
+
   const durationMs = currentTrack?.duration_ms ?? 0;
   const elapsed = formatTime(Math.floor((progressMs ?? 0) / 1000));
   const total = formatTime(Math.floor(durationMs / 1000));
@@ -63,11 +69,11 @@ export const PlayerBar = (): ReactElement => {
         onClick={isPlaying ? handlePause : handlePlay}
         title={isPlaying ? "Pause" : "Play"}
       >
-        {isPlaying ? '▐▐' : '▶'}
+        {isPlaying ? <span className="player-pause-icon">⏸</span> : '▶'}
       </button>
 
       {/* Stop */}
-      <button type="button" className="player-control-btn player-control-btn-stop player-desktop-only" title="Stop">{'■'}</button>
+      <button type="button" className="player-control-btn player-control-btn-stop player-desktop-only" onClick={handleStop} title="Stop">{'■'}</button>
 
       {/* Previous */}
       <button type="button" className="player-control-btn player-desktop-only" onClick={handlePrev} title="Previous">{'◀◀'}</button>

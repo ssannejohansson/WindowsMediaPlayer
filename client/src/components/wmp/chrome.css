@@ -107,6 +107,11 @@
     border-style: inset;
 }
 
+.wmp-btn-maximize {
+    font-size: 13px;
+    padding-bottom: 2px;
+}
+
 .wmp-btn-close {
     background: linear-gradient(180deg, #e06060 0%, #b82020 100%);
     border-color: #e08080;

@@ -28,3 +28,7 @@ export const nextTrack = async () => {
 export const previousTrack = async () => {
     await spotifyClient.post("/me/player/previous");
 }
+
+export const seekTo = async (positionMs: number) => {
+    await spotifyClient.put("/me/player/seek", null, { params: { position_ms: positionMs } });
+}

@@ -14,7 +14,7 @@ export const TitleBar = ({ title }: TitleBarProps) => {
             </div>
             <div className="wmp-titlebar-buttons">
                 <button type="button" className="wmp-btn-chrome" title="Minimize">−</button>
-                <button type="button" className="wmp-btn-chrome" title="Maximize">□</button>
+                <button type="button" className="wmp-btn-chrome wmp-btn-maximize" title="Maximize">□</button>
                 <button type="button" className="wmp-btn-chrome wmp-btn-close" title="Close">×</button>
             </div>
         </div>
