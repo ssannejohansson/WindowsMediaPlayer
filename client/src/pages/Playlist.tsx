@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePlaylist } from "../hooks/usePlaylist.js";
 import { PlaylistSkeleton } from "../components/ui/PlaylistSkeleton.js";
+import { ErrorMessage } from "../components/ui/ErrorMessage.js";
 import { playTrack } from "../lib/playerApi.js";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
 import "./playlist.css";
@@ -18,10 +19,21 @@ export const Playlist = (): ReactElement => {
   const deviceId = usePlayerStore((s) => s.deviceId);
 
   // Fetch the specific playlist by ID.
-  const { data: playlist, isLoading } = usePlaylist(id);
+  const { data: playlist, isLoading, isError, refetch } = usePlaylist(id ?? null);
 
   if (isLoading) {
     return <PlaylistSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <div className="playlist-container">
+        <ErrorMessage
+          message="Could not load this playlist. Check your connection and try again."
+          onRetry={() => refetch()}
+        />
+      </div>
+    );
   }
 
   const trackCount = playlist?.items?.total ?? 0;
