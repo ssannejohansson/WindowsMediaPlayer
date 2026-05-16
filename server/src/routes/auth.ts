@@ -31,6 +31,7 @@ router.get("/callback", async (req, res) => {
 
   try {
     const tokens = await exchangeCodeForTokens(code);
+    logger.info("Token exchange scopes: %s", tokens.scope ?? "(none returned)");
 
     const profileResponse = await axios.get("https://api.spotify.com/v1/me", {
       headers: {
@@ -50,7 +51,12 @@ router.get("/callback", async (req, res) => {
       display_name: profileResponse.data.display_name || "",
     });
     const clientUrl = process.env.CLIENT_URL || "http://127.0.0.1:5173";
-    res.redirect(`${clientUrl}/auth/callback?${params.toString()}`);
+    const destination = `${clientUrl}/auth/callback?${params.toString()}`;
+    // Serve a page that navigates explicitly — bare 302 redirects from Spotify's
+    // origin can be blocked by Chrome in certain browser states.
+    res.send(`<!DOCTYPE html><html><head><meta charset="utf-8">
+<script>window.location.replace(${JSON.stringify(destination)})</script>
+</head><body></body></html>`);
   } catch (err) {
     logger.error("Failed to exchange code for tokens: %o", err);
     res.status(500).send("Token exchange failed");

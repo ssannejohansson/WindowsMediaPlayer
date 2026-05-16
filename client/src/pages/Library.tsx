@@ -2,12 +2,17 @@ import type { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { useLibrary } from "../hooks/useLibrary.js";
 import { useUserPlaylists } from "../hooks/usePlaylist.js";
-import { useLikeToggle } from "../hooks/useLikedSongs.js";
 import { useRecentlyPlayed } from "../hooks/useRecentlyPlayed.js";
 import { Spinner } from "../components/ui/Spinner.js";
 import { playTrack } from "../lib/playerApi.js";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
 import "./library.css";
+
+const formatDuration = (ms: number) => {
+    const min = Math.floor(ms / 60000);
+    const sec = Math.floor((ms % 60000) / 1000);
+    return `${min}:${sec.toString().padStart(2, "0")}`;
+};
 
 export const Library = (): ReactElement => {
     const deviceId = usePlayerStore((s) => s.deviceId);
@@ -18,7 +23,6 @@ export const Library = (): ReactElement => {
     // Fetch user's playlists (created or followed)
     const { data: playlists, isLoading: playlistsLoading } = useUserPlaylists();
 
-    const { mutate: toggleLike } = useLikeToggle();
     const { data: recentlyPlayed } = useRecentlyPlayed();
 
     if (likedLoading || playlistsLoading) {
@@ -79,16 +83,9 @@ export const Library = (): ReactElement => {
                         <div className="library-track-album">
                         {item.track.album?.name}
                         </div>
-                        {/* All songs here are liked — clicking removes the like */}
-                        <button
-                            type="button"
-                            className="heart-btn liked"
-                            title="Unlike"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                toggleLike({ id: item.track.id, currentlyLiked: true });
-                            }}
-                        >{'♥'}</button>
+                        <div className="library-track-duration">
+                        {formatDuration(item.track.duration_ms)}
+                        </div>
                     </div>
                     ))}
                 </div>
