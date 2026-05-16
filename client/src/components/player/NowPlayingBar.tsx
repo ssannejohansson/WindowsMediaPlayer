@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { usePlayerStore } from "../../stores/usePlayerStore.js";
 import "./nowplayingbar.css";
 
 export const NowPlayingBar = () => {
+    const navigate = useNavigate();
     const { currentTrack, isPlaying } = usePlayerStore();
 
     if (!currentTrack) return null;
@@ -9,7 +11,7 @@ export const NowPlayingBar = () => {
     const albumArt = currentTrack.album?.images?.[2]?.url ?? currentTrack.album?.images?.[0]?.url;
 
     return (
-        <div className="now-playing-bar">
+        <div className="now-playing-bar" onClick={() => navigate("/now-playing")}>
             {albumArt && (
                 <img className="now-playing-bar-art" src={albumArt} alt={currentTrack.album?.name} />
             )}
