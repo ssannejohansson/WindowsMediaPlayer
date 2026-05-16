@@ -314,8 +314,11 @@ These player components are not implemented yet; they are the next files to add 
 
 - [x] Current implemented routes render without errors
 - [x] Login, callback, search, now-playing, and library placeholder routes exist
-- [x] Library shows real playlists from Spotify
-- [x] PlayerBar plays, pauses, and skips tracks
+- [x] Library shows real playlists and liked songs from Spotify
+- [x] Playlist detail page with track list (#, title, artist, duration)
+- [x] Equalizer page with 10-band sliders and presets
+- [x] PlayerBar plays, pauses, and skips tracks with progress scrubber
+- [x] NowPlaying page shows album art and track info
 - [x] UI looks recognisably like Windows Media Player
 
 ---
@@ -388,9 +391,11 @@ When the viewport is narrower than `768px`, collapse the full window chrome into
 - Show a slim PlayerBar with just album art, track name, and play/pause
 - Tap album art to expand to NowPlaying full screen
 ### Phase 4 checklist
-- [ ] Heart icon toggles correctly on all track rows with optimistic update
-- [ ] Recently played strip shows on Library page
-- [ ] Compact mobile skin renders on narrow viewports
+- [~] Heart icon toggle — removed; Spotify returns 403 "Forbidden" on library write endpoints in dev mode regardless of scopes, not worth the debugging cost for a portfolio project
+- [x] Recently played strip shows on Library page
+- [x] Compact mobile skin renders on narrow viewports
+- [x] Mobile: full-screen WMP window, slim PlayerBar with art + track name, tap to open NowPlaying
+- [x] OAuth login flow fixed (window.location.replace redirect, 127.0.0.1 host)
 ---
  
 ## Phase 5 — Polish + UX
