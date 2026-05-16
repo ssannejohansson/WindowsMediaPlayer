@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { WindowFrame } from "./components/wmp/WindowFrame";
 import { PlayerBar } from "./components/player/PlayerBar.js";
 import { NowPlayingBar } from "./components/player/NowPlayingBar.js";
@@ -14,6 +14,9 @@ import "./App.css";
 import "./components/player/player.css";
 
 export default function App() {
+  const location = useLocation();
+  const isNowPlaying = location.pathname === "/now-playing";
+
   return (
     <WindowFrame title="Windows Media Player">
       <div className="app-content">
@@ -33,7 +36,7 @@ export default function App() {
         </Routes>
       </div>
 
-      <NowPlayingBar />
+      {!isNowPlaying && <NowPlayingBar />}
       <PlayerBar />
     </WindowFrame>
   );
