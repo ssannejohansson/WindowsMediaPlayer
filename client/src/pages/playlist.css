@@ -75,7 +75,7 @@
 
 .playlist-tracks-header {
     display: grid;
-    grid-template-columns: 36px 1fr 180px 64px;
+    grid-template-columns: 36px 1fr 180px 28px 64px;
     gap: 4px;
     padding: 2px 6px;
     background: #d4d0c8;
@@ -87,7 +87,7 @@
 
 .playlist-track-row {
     display: grid;
-    grid-template-columns: 36px 1fr 180px 64px;
+    grid-template-columns: 36px 1fr 180px 28px 64px;
     gap: 4px;
     padding: 2px 6px;
     align-items: center;
@@ -139,6 +139,26 @@
     font-size: 11px;
     background: #f0eeea;
     border-top: 1px solid #d4d0c8;
+}
+
+/* Heart / like button */
+.heart-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+    line-height: 1;
+    color: #aaa;
+    text-align: center;
+}
+
+.heart-btn.liked {
+    color: #c00;
+}
+
+.heart-btn:hover {
+    color: #c00;
 }
 
 /* Empty State */

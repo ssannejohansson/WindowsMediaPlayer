@@ -149,6 +149,26 @@
     color: #6e6e6e;
 }
 
+/* Heart / like button */
+.heart-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0 2px;
+    line-height: 1;
+    flex-shrink: 0;
+    color: #aaa;
+}
+
+.heart-btn.liked {
+    color: #c00;
+}
+
+.heart-btn:hover {
+    color: #c00;
+}
+
 /* Empty State */
 .library-empty {
     padding: 1rem;
