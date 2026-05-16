@@ -1,6 +1,6 @@
 import { spotifyClient } from "./spotify";
 
-export const transferPlayback = async (deviceId: string, play = true) => {
+export const transferPlayback = async (deviceId: string, play = false) => {
     await spotifyClient.put("/me/player", { device_ids: [deviceId], play });
 };
 

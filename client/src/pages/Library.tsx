@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useLibrary } from "../hooks/useLibrary.js";
 import { useUserPlaylists } from "../hooks/usePlaylist.js";
 import { useRecentlyPlayed } from "../hooks/useRecentlyPlayed.js";
-import { Spinner } from "../components/ui/Spinner.js";
+import { LibrarySkeleton } from "../components/ui/LibrarySkeleton.js";
 import { playTrack } from "../lib/playerApi.js";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
 import "./library.css";
@@ -26,7 +26,7 @@ export const Library = (): ReactElement => {
     const { data: recentlyPlayed } = useRecentlyPlayed();
 
     if (likedLoading || playlistsLoading) {
-        return <Spinner />;
+        return <LibrarySkeleton />;
     };
 
     return (

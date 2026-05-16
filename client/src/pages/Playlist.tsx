@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { usePlaylist } from "../hooks/usePlaylist.js";
-import { Spinner } from "../components/ui/Spinner.js";
+import { PlaylistSkeleton } from "../components/ui/PlaylistSkeleton.js";
 import { playTrack } from "../lib/playerApi.js";
 import { usePlayerStore } from "../stores/usePlayerStore.js";
 import "./playlist.css";
@@ -21,7 +21,7 @@ export const Playlist = (): ReactElement => {
   const { data: playlist, isLoading } = usePlaylist(id);
 
   if (isLoading) {
-    return <Spinner />;
+    return <PlaylistSkeleton />;
   }
 
   const trackCount = playlist?.items?.total ?? 0;
