@@ -56,6 +56,11 @@ export const Playlist = (): ReactElement => {
 
   return (
     <div className="playlist-container">
+      <div className="playlist-topbar">
+        <button type="button" onClick={() => navigate("/library")} className="playlist-back-btn">
+          ← Back to Library
+        </button>
+      </div>
       <div className="playlist-header">
         {playlist.images?.[0]?.url && (
           <img
@@ -110,12 +115,6 @@ export const Playlist = (): ReactElement => {
         )}
       </div>
 
-      <button
-        onClick={() => navigate("/library")}
-        className="playlist-back-btn"
-      >
-        ← Back to Library
-      </button>
     </div>
   );
 };

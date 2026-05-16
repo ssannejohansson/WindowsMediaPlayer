@@ -71,6 +71,12 @@
     color: #6e6e6e;
 }
 
+.nowplaying-topbar {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
 /* Back button */
 .nowplaying-back-btn {
     align-self: flex-start;
