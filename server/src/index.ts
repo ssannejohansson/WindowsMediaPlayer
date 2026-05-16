@@ -3,8 +3,8 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
-import logger from "./lib/logger";
-import authRouter from "./routes/auth";
+import logger from "./lib/logger.js";
+import authRouter from "./routes/auth.js";
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 3001);

@@ -3,9 +3,8 @@ import { useState } from "react";
 export const VolumeControl = () => {
   const [volume, setVolume] = useState(70);
 
-  const handleVolumeChange = (e) => {
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVolume(Number(e.target.value));
-    // TODO: Connect to Spotify Web Playback SDK volume API in Phase 4
   };
 
   return (
@@ -18,6 +17,8 @@ export const VolumeControl = () => {
         value={volume}
         onChange={handleVolumeChange}
         className="volume-slider"
+        title={`Volume: ${volume}%`}
+        aria-label="Volume"
       />
       <span className="volume-label">{volume}%</span>
     </div>

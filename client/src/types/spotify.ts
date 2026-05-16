@@ -59,10 +59,3 @@ export interface Playlist {
     // Spotify now uses "items" for both simplified (/me/playlists) and full (/playlists/:id) responses
     items?: { href: string; total: number; items?: PlaylistTrackItem[]; next?: string }
 }
-
-export interface SearchResponse {
-    tracks?: { items: Track[] }
-    artists?: {items: Artist[] }
-    albums?: { items: Album[] }
-    playlists?: { items: Playlist[] }
-}
