@@ -76,6 +76,7 @@ export const getSpotifyAuthorizeURL = (): string => {
       "user-modify-playback-state",
       "user-library-read",
       "playlist-read-private",
+      "user-read-recently-played",
     ].join(" "),
   });
   return `https://accounts.spotify.com/authorize?${params}`;

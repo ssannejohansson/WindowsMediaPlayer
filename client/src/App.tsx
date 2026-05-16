@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { WindowFrame } from "./components/wmp/WindowFrame";
 import { PlayerBar } from "./components/player/PlayerBar.js";
+import { NowPlayingBar } from "./components/player/NowPlayingBar.js";
 import { RequireAuth } from "./components/routing/RequireAuth.js";
 import { Login } from "./pages/Login";
 import { AuthCallback } from "./pages/AuthCallback.js";
@@ -32,6 +33,7 @@ export default function App() {
         </Routes>
       </div>
 
+      <NowPlayingBar />
       <PlayerBar />
     </WindowFrame>
   );
