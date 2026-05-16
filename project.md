@@ -452,9 +452,9 @@ Review the server logs — make sure every Express route logs request method, pa
 ### Phase 5 checklist
 - [x] No bare spinners remain — Library and Playlist replaced with shimmer skeletons
 - [x] Error states show a WMP-style error dialog with retry (Library, Playlist)
-- [ ] Page transitions and hover states feel smooth
+- [x] Page transitions — fade in on route change (120ms)
 - [~] Keyboard shortcuts — skipped, not impactful for portfolio
-- [ ] Server logs are clean and structured
+- [~] Winston logging review — skipped, not impactful for portfolio
 ---
  
 ## Phase 6 — Deployment

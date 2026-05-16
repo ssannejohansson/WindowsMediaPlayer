@@ -12,6 +12,8 @@
     border-top: 1px solid #aaa;
     font-family: Tahoma, sans-serif;
     flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .now-playing-bar-art {
